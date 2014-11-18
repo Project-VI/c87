@@ -5,7 +5,7 @@
 Yahoo! Japan
   内製クラウド環境からの移行
   ショッピング、ヤフオク、知恵袋、トラベル、不動産、ブックストア、ゲームなどが利用
-    
+
 GREE
   大規模ゲーム基盤として採用
   運用効率化のため物理サーバの提供から仮想環境の提供へシフトするためにOpenStackを選択
@@ -18,10 +18,60 @@ NEC
 GMOインターネット
   Conoha VPSサービス、PaaSサービスの基盤として採用
 
+海外では、CERN、eBay、Yahoo!、AT&Tなどがすでに事例を出しています。
+
 これら事例から以下のことが重要であると考えられます。
   1. 大規模クラウドを実現するための拡張性
   2. OSSによる高品質サービスの実現
 
-OpenStack Summit
 毎年、5月と11月に開催されているOpenStack Summitでは、世界中のエンジニアが様々なトピックについて議論を繰り広げています。特に、大規模なクラウド環境の構築や高可用性のある設計について、白熱した議論が行われています。エンジニアが会社を跨いで、他社の事例や取り組みを入手でき、かつ議論できることは、OSSベースであるOpenStackを利用することの魅力の一つだと考えられます。
+
+なぜ今オープンソースに注目が集まるのか
+
+AT＆Tが彼らの伝統的な領域の外から積極的に新たな競争を経験しているを念頭に置いて、フォードは、同社の幹部のリーダーシップは、彼らが変化し、かつ必要がありOpenStackは、急速に柔軟かつ機動的なDevOps環境を推進するための触媒として見られていることを知っていることを認めた。
+
+技術革新の主要分野の一例として、フォードはビデオエンターテイメントコンテンツが保存され、最終的には、AT＆T
+U-詩の顧客に配信する方法を変換するための機会を指摘した。レガシー垂直統合型インフラモデルの事前の制約を越えて行くことによって、AT＆Tは、それらのネットワークアーキテクチャを再設計することができます。これは、彼らが主要な機能やマルチメディアコンテンツ、それによって彼らに究極のユーザーにはるかに近い配置の両方を配布することができます。
+
+自然に意図したとおりにすべてのベンダーは、高品質の動作するコードやスケールを生成するために駆動して、生態系内の仲間からの圧力を活用
+- フォードは燃えがらと中性子の固有の機能は、インフラベンダーとのより生産的な関係を持つように、AT＆Tをイネーブルにするものと考えております。
+
+またOpenStackの採用も、AT＆Tの広大なIT組織全体にアジャイル手法を伝播するためにフォードと彼のチームを支援して、利益を指向する。加えて、初期の結果からトリクルダウン効果があった。さて、AT＆Tは、ソフトウェア定義ネットワーキング（SDN）をもっと詳しく見てきました、とフォードは、彼が本当にコアネットワーク内の実質的な変更を進めるために機会によって励起さだと言います。
+
+フォードはそれがフェデレーションが-だと考えている結合凝集-最終的にはOpenStackを成功させるでしょう。確かに、そこに重要な分野の数の課題を認識したが、フォードはOpenStackのための電流経路が健全で安定した両方であると確信しています。彼は、より先進的なサービスプロバイダーは、世界的に、早期導入のリードに従います予想しています。肯定的な影響は、本当に驚くべきです。
+
+Why open source is now pervasive
+
+Keeping in mind that AT&T is experiencing aggressive new competition from
+outside of their traditional realm, Ford acknowledged that the company’s
+executive leadership knows that they must change—and OpenStack is seen as a
+catalyst to rapidly advance a flexible and agile DevOps environment.
+
+As an example of key areas of innovation, Ford pointed to the opportunities to
+transform how video entertainment content is stored and eventually delivered to
+AT&T U-verse customers. By going beyond prior constraints of the legacy
+vertically integrated infrastructure model, AT&T will be able to re-engineer
+their network architecture. This will allow them to distribute both key
+functions and multimedia content—thereby placing them much closer to the
+ultimate user.
+
+Ford believes that the inherent capabilities of Cinder and Neutron will enable
+AT&T to have a more productive relationship with infrastructure vendors –
+leveraging the peer pressure within the ecosystem that naturally drives all
+vendors to produce high-quality code that works and scales as intended.
+
+In addition to direct benefits, OpenStack adoption is also helping Ford and his
+team to propagate agile methods throughout AT&T’s vast IT organization.
+Besides, there has been a trickle-down effect from the early results. Now, AT&T
+has looked more closely at Software Defined Networking (SDN), and Ford says that
+he’s really excited by the opportunity to advance substantive change in the
+core network.
+
+Ford believes that it’s the federation—the binding cohesion—that will
+ultimately make OpenStack succeed. Granted, there are recognized challenges in a
+number of key areas, but Ford is confident that the current path for OpenStack
+is both sound and stable. He anticipates more forward-thinking service
+providers, globally, will follow the lead of the early adopters. The positive
+impact is truly remarkable.
+
 
