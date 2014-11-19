@@ -16,24 +16,9 @@ NeutronはOpenStackに対してネットワークに紐付いたサービスを�
 
 Image Service
 Code-name: Glance:
-クラウドプラットフォームの鍵となるメリットの一つに、ユーザが好きなときにすぐに仮想マシンを立ち上げることができることです。
-
-One of the key benefits to a cloud platform is the ability to spin up virtual
-machines quickly when users request them. Glance helps accomplish this by
-creating templates for virtual machines. Glance can copy or snapshot a virtual
-machine image and allow that to be recreated. That means administrators can set
-up a catalog of virtual machine templates that users can select from and
-self-provision. Glance can also be used to back up existing images to save them.
-Glance integrates with Cinder to store the images.
-
+クラウドプラットフォームの鍵となるメリットの一つはユーザが好きなときにすぐに仮想マシンを立ち上げることができることです。Glanceは仮想マシンのテンプレートを作成すること、かつ仮想マシンの再作成やコピー、スナップショットの取得でこの役割を助けます。つまり、管理者は、ユーザが自身でプロビジョニングするときに選択する仮想マシンのテンプレートのカタログを設定するだけでよいということです。また既存イメージのバックアップや保存にも活用され、かつ、イメージの保存先としてCinderと連携することが可能です。
 
 
 Identity Service
 Code-name: Keystone:
-OpenStack has a variety of components that are OpenStack shared services,
-meaning they work across various parts of the software, such as Keystone. This
-project is the primary tool for user authentication and role-based access
-controls in OpenStack clouds. Keystone integrates with LDAP to provide a central
-directory of users and allows administrators to set policies that control which
-resources various users have access to. Keystone supports traditional username
-and password logins, in addition to token-based logins.
+Keystoneはユーザ認証とロールベースのアクセスコントロールをOpenStackに提供するためのコンポーネントです。KeystoneはLDAPと連携することでユーザコントロールやポリシーの設定が可能になります。また、伝統的なID/Passwordによるログインに加えてトークンベースのログインも可能です。
