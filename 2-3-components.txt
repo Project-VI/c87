@@ -1,0 +1,39 @@
+第2章
+3節 OpenStackコンポーネント
+OpenStackは複数のコンポーネントにより構成されており、その各々のコンポーネントが特定の機能に特化しています。ユーザは、目的に応じて必要なコンポーネントをインストールすることで柔軟な設計をすることが可能です。2014年4月にリリースされたIcehouseというバージョンでは11の主要コンポーネントが存在します。以下のその各コンポーネントの中でも特に重要な5つのコンポーネントについて説明します。
+
+Compute Service
+Code-name: Nova:
+Novaは、コンピュートリソースの運用とプロビジョニング自動化のために設計されています。つまり、Nova自身はハイパーバイザーそのものではなく、仮想マシンの管理ソフトウェアということです。加えて、Novaは仮想化技術としKVMだけではなくXen、VMware ESX(i)、Hyper-V、それにベアメタルをサポートします。コンピュートリソースは、開発者に対してAPIを通して、また管理者やユーザに対してWebのインターフェースを通して利用可能です。コンピュートの設計は、コモディティ化された物理サーバ群を利用しスケールアウトすることが可能です。IcehouseからはNova自身のローリングアップグレードが可能となっており、Novaそれ自身を稼働中の仮想VMをシャットダウンさせることなく新しいバージョンにアップグレードすることが可能となっています。また、NovaのAPIはAWSのEC2のAPIと互換性を保っています。
+
+Block Storage Service
+Code-name: Cinder:
+Cinderを利用することでブロックストレージの管理が可能になります。それにより各インスタンスに対してストレージ領域の拡張を可能にします。具体的には拡張用ブロックの作成や作成したボリュームのアタッチ、デタッチを管理します。その他Cinderの主要な機能としては、伝統的なエンタープライズの共有ストレージシステムを統合管理することです。例えば、Linux NFS、LVM、Ceph、NetApp、Nexenta、SoliddFire、EMC、3PARなどがその対象です。これはAWSのEBSと同等の機能を提供するサービスと考えることができます。
+
+Networking Service
+Code-name: Neutron:
+NeutronはOpenStackに対してネットワークに紐付いたサービスを提供します。これは他のコンポーネントに比べて特にAPI-Drivenで開発されているシステムであり、かつ管理者やユーザは様々なタイプのネットワーク(例えば、Flat Networks、VLANs、VPNなど)をAPIを使用してオンデマンドでカスタマイズすることが可能です。また、専用のIPアドレスやFloating IPアドレスの提供も可能です(特に後者はメンテナンスは障害時にトラフィックの経路変更をするときに役に立ちます)。またOpenFlow SDNやプラグイン形式でロードバランサーサービスやファイアーウォールサービスの提供もサポートしています。
+
+Image Service
+Code-name: Glance:
+クラウドプラットフォームの鍵となるメリットの一つに、ユーザが好きなときにすぐに仮想マシンを立ち上げることができることです。
+
+One of the key benefits to a cloud platform is the ability to spin up virtual
+machines quickly when users request them. Glance helps accomplish this by
+creating templates for virtual machines. Glance can copy or snapshot a virtual
+machine image and allow that to be recreated. That means administrators can set
+up a catalog of virtual machine templates that users can select from and
+self-provision. Glance can also be used to back up existing images to save them.
+Glance integrates with Cinder to store the images.
+
+
+
+Identity Service
+Code-name: Keystone:
+OpenStack has a variety of components that are OpenStack shared services,
+meaning they work across various parts of the software, such as Keystone. This
+project is the primary tool for user authentication and role-based access
+controls in OpenStack clouds. Keystone integrates with LDAP to provide a central
+directory of users and allows administrators to set policies that control which
+resources various users have access to. Keystone supports traditional username
+and password logins, in addition to token-based logins.
