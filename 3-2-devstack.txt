@@ -1,0 +1,13 @@
+devstackを使ってみる
+まずLinuxが必要です。devstackのコードを見るとサポートされているディストリビューションは、
+
+Fedora21とUbuntu14.04で試してみましょう。
+執筆時点ではUbuntu14.10はサポート外でした。mariadb-serverを使わない点や、openswanが14.04のリポジトリに無いことなど、があります。
+FedoraはServer, Workstationどちらでもよいと思います。今回はFedora21 Workstation betaを使用しました。
+スペックは大きな物が必要です。僕はRAM4GB 4Cores 32GB Btrfsで開発していますが、ギリギリです。最低限のコンポーネントを
+ディストリビューションのインストールに関しては割愛します。ファイルシステムは？ネットワークインターフェースは？カーネルのパラメータは？IntelVT効いてないとだめじゃない？
+
+
+Ceilomerterを動かす際に
+proxy
+instead of gitは--systemで
