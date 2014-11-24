@@ -2,7 +2,10 @@ devstackを使ってみる
 
 まずLinuxが必要です。devstackのコードを見るとサポートされているディストリビューションは、
 
-Fedora21とUbuntu14.04で試してみましょう。執筆時点ではUbuntu14.10はサポート外でした。mariadb-serverを使わない点や、openswanが14.04のリポジトリに無いことなど、があります。FedoraはServer, Workstationどちらでもよいと思います。今回はFedora21 Workstation betaを使用しました。
+Fedora21とUbuntu14.04で試してみましょう。執筆時点ではUbuntu14.10はサポート外でした。mariadb-serverを使わない点や、openswanが14.04のリポジトリに無いことなど、があります。FedoraはServer, Workstationどちらでもよいと思います。今回はFedora Server 21 betaを使用しました。Serverはyum、Workstationはdnf。Serverでdnfって打ったら、そんなコマンド無いって言われたよ。
+
+Development Tools
+zsh vim tmux
 
 ディストリビューションのインストールに関しては割愛します。ファイルシステムは？ネットワークインターフェースは？カーネルのパラメータは？IntelVT効いてないとだめじゃない？
 
@@ -49,7 +52,44 @@ instead of gitは--systemで
 
 devstackを動かしたい
 
-ところでdevstackが何をやっているかと言いますと、OpenStackの公式GitリポジトリからソースコードをCloneしてきて、必要なPythonパッケージのインストールをし、設定ファイル自動生成し、コンポーネントを順番に起動していきます。起動したら、テスト用の初期データの投入や、テスト用のOSイメージファイルなどのダウンロード・登録をします。つまり、OpenStackが何となく動く状態にまで持っていってくれます。
+ところでdevstackが何をやっているかと言いますと、OpenStackの公式GitリポジトリからソースコードをCloneしてきて、必要なPythonパッケージのインストールをし、設定ファイル自動生成し、コンポーネントを順番に起動していきます。起動したら、テスト用の初期データの投入や、テスト用のOSイメージファイルなどのダウンロード・登録をします。つまり、OpenStackが何となく動く状態にまで持っていってくれます。localrcも書いたし、とりあえずstack.shを実行してみましょう。pwdはdevstackです。
 
-ここで、以下のことが分かります
-ネットワーク接続が必要
+./stack.rc
+
+延々とメッセージが出ますね。何をやっているかはあとで説明するとして、ちょっと待ってみましょう。何か聞かれませんか？
+
+OpenStackは必要なデータを保存しておくシステムとして、データベースシステムを必要とします。MySQLでもsqliteでもpostgresqlでも（たぶん）いいのですが、devstackはMySQLを使おうとします。つまり、勝手にインストールします。そして、勝手に起動します。（自動起動はしない。）ます聞かれるのは、このデータベースのrootパスワードです。
+
+devstack動いてる？
+
+動いてる？見てみましょう。新しい端末を開いて、
+
+screen -x stack
+
+お、何か起こりましたね。Screenです。Screen？そこから説明するのはめんどくさいのでやめます。
+
+devstackにおいて、OpenStackの各コンポーネントはscreenの中で動きます。psしてみましょう。
+上のstackという名前でセッションができるので、
+
+devstack詳解
+
+devstackには多くの設定項目が存在します。しかし、そのほとんどには適切なデフォルト値が設定されています。そのため、特に設定を変更せずとも、それなりに動くようになります。問題は、デフォルトでは起動されないコンポーネントがあります。たとえば、以下のように設定ファイルを書くと、devstackで起動できるすべてのコンポーネントを起動することができます。
+
+enable_service tempest
+enable_service ceilometer ceilometer-acompute ceilometer-acentral ceilometer-anotification ceilometer-collector ceilometer-api
+enable_service s-proxy s-object s-container s-account
+enable_service trove tr-api tr-tmgr tr-cond
+enable_service sahara
+enable_service zaqar-server
+disable_service heat h-eng h-api h-api-cfn h-api-cw 
+
+tempestは結合テスト、ceilometerはOpenStack環境のリソース使用の解析、s-*はオブジェクトストレージシステムのSwift、troveはデータベースサービス。saharaはHadoopクラスタを提供する機能、zaqarはキューイングサービス、heatはサーバーのオーケストレーションです。これ全部起動するとどうなるかと言うと、ものっすごいメモリを消費します。８GBくらいは欲しいですね。
+
+他にも便利な設定値があります
+
+RECLONE=yes
+VOLUME_BACKING_FILE_SIZE=16M
+SCREEN_HARDSTATUS='%{= .b}%-Lw%{=b .r}%>%n%f %t*%{= .b}%+Lw%< %-=%{g}(%{d}%H/%l%{g})'
+ENABLE_HTTPD_MOD_WSGI_SERVICES=False 
+
+RECLONEは、devstack起動時に最新のソースコードを毎回Cloneしてくるか否か。
