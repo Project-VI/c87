@@ -4,8 +4,10 @@ devstackを使ってみる
 
 Fedora21とUbuntu14.04で試してみましょう。執筆時点ではUbuntu14.10はサポート外でした。mariadb-serverを使わない点や、openswanが14.04のリポジトリに無いことなど、があります。FedoraはServer, Workstationどちらでもよいと思います。今回はFedora Server 21 betaを使用しました。Serverはyum、Workstationはdnf。Serverでdnfって打ったら、そんなコマンド無いって言われたよ。
 
-Development Tools
-zsh vim tmux
+お試しで動かす場合にSELinuxは邪魔でしかありませんので、Disable、は負けを認めた感じになりますので、Permissiveにしておきましょう
+
+vim /etc/selinux/config
+reboot
 
 ディストリビューションのインストールに関しては割愛します。ファイルシステムは？ネットワークインターフェースは？カーネルのパラメータは？IntelVT効いてないとだめじゃない？
 
@@ -13,11 +15,15 @@ zsh vim tmux
 
 Linuxのインストールが終わったら、まずはdevstackを取得してみましょう。devstackは残念ながらパッケージでは用意されていません。Cloneしてくる必要があります。
 
-git clone
+git clone https://github.com/openstack-dev/devstack.git
 
 え？Gitが無いって？貴方Ubuntuユーザーですね？Ubuntuはいつだってそうでした。
 
 apt-get install build-essentials
+
+Fedoraでは以下のパッケージをインストールしておくと後の作業が楽でしょう。
+
+yum group install 'Development Tools'
 
 あ、そもそもネットワークが繋がってないです？それは知りません。ますはFlets光とかでググってみましょう。ああそうかネット繋がってないのか。じゃあ諦めましょう。それは創造のチャンスです。ネットワークアクセスが無くても、OpenStackの意義は、どこかにあるはずです。そうでないなら、さっさとLanケーブルなりWiFiなりにつなぎましょう。もうDHCPでいいですよ。それでも動きます。
 
@@ -48,7 +54,14 @@ proxy
 
 instead of gitは--systemで
 
-何をもってしてLinuxのインストールが終わったか、というのは人によるでしょう。ここでは、インストーラーでの作業が終了し、パッケージのアップデートが終わっている状態とします。(apt-get update && apt-get upgrade, yum update, dnf upgrade)普通は他にもやりたいことがあるかと思います。(vim, emacs, zsh, screen, tmux...)
+何をもってしてLinuxのインストールが終わったか、というのは人によるでしょう。ここでは、インストーラーでの作業が終了し、パッケージのアップデートが終わっている状態とします。(apt-get update && apt-get upgrade, yum update, dnf upgrade)普通は他にもやりたいことがあるかと思います。(vim, emacs, zsh, screen, tmux, tig ...)執筆時には以下をインストールしました
+vim zsh tmux tig
+
+Fedora21 ServerにはCockpitというサーバーリソース管理サービスがデフォルトでインストールされています。有効化はされていないので、以下で起動を指定し、9090ポートをWebブラウザで開くと、リソース使用状況を綺麗なページで見ることができます。まぁ、出来はまだまだですが。
+
+systemctl start cockpit
+
+CPU、メモリ、ディスク、ネットワーク、起動中のサービスなどの基本情報に加えて、ユーザー情報、Dockerサービス、Dockerコンテナ、journalctlなんかもWebから見ることができます。
 
 devstackを動かしたい
 
@@ -58,7 +71,72 @@ devstackを動かしたい
 
 延々とメッセージが出ますね。何をやっているかはあとで説明するとして、ちょっと待ってみましょう。何か聞かれませんか？
 
+################################################################################
+ENTER A PASSWORD TO USE FOR THE DATABASE.
+################################################################################
+This value will be written to your localrc file so you don't have to enter it
+again.  Use only alphanumeric characters.
+If you leave this blank, a random default value will be used.
+Enter a password now:
+
 OpenStackは必要なデータを保存しておくシステムとして、データベースシステムを必要とします。MySQLでもsqliteでもpostgresqlでも（たぶん）いいのですが、devstackはMySQLを使おうとします。つまり、勝手にインストールします。そして、勝手に起動します。（自動起動はしない。）ます聞かれるのは、このデータベースのrootパスワードです。
+
+################################################################################
+ENTER A PASSWORD TO USE FOR RABBIT.
+################################################################################
+This value will be written to your localrc file so you don't have to enter it
+again.  Use only alphanumeric characters.
+If you leave this blank, a random default value will be used.
+Enter a password now:
+
+################################################################################
+ENTER A SERVICE_TOKEN TO USE FOR THE SERVICE ADMIN TOKEN.
+################################################################################
+This value will be written to your localrc file so you don't have to enter it
+again.  Use only alphanumeric characters.
+If you leave this blank, a random default value will be used.
+Enter a password now:
+
+################################################################################
+ENTER A SERVICE_PASSWORD TO USE FOR THE SERVICE AUTHENTICATION.
+################################################################################
+This value will be written to your localrc file so you don't have to enter it
+again.  Use only alphanumeric characters.
+If you leave this blank, a random default value will be used.
+Enter a password now:
+
+################################################################################
+ENTER A PASSWORD TO USE FOR HORIZON AND KEYSTONE (20 CHARS OR LESS).
+################################################################################
+This value will be written to your localrc file so you don't have to enter it
+again.  Use only alphanumeric characters.
+If you leave this blank, a random default value will be used.
+Enter a password now:
+
+yum downgrade pcre
+[makisyu@localhost]~/devstack% sudo yum install pcre-devel
+読み込んだプラグイン:langpacks
+依存性の解決をしています
+--> トランザクションの確認を実行しています。
+---> パッケージ pcre-devel.x86_64 0:8.35-7.fc21 を インストール
+--> 依存性の処理をしています: pcre(x86-64) = 8.35-7.fc21 のパッケージ: pcre-devel-8.35-7.fc21.x86_64
+--> 依存性解決を終了しました。
+エラー: パッケージ: pcre-devel-8.35-7.fc21.x86_64 (fedora)
+             要求: pcre(x86-64) = 8.35-7.fc21
+            インストール: pcre-8.35-8.fc21.x86_64 (@updates-testing)
+                pcre(x86-64) = 8.35-8.fc21
+            利用可能: pcre-8.35-7.fc21.x86_64 (fedora)
+                pcre(x86-64) = 8.35-7.fc21
+ 問題を回避するために --skip-broken を用いることができます。
+ これらを試行できます: rpm -Va --nofiles --nodigest
+
+Horizon is now available at http://192.168.226.131/
+Keystone is serving at http://192.168.226.131:5000/v2.0/
+Examples on using novaclient command line is in exercise.sh
+The default users are: admin and demo
+The password: openstack
+This is your host ip: 192.168.226.131
+2014-11-25 13:48:02.914 | stack.sh completed in 1159 seconds.
 
 devstack動いてる？
 
