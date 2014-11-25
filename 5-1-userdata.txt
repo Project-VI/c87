@@ -1,0 +1,15 @@
+第5章
+1節 ブート時のインスタンスの設定
+config_drive
+
+You can configure OpenStack to write metadata to a special configuration drive that attaches to the instance when it boots. The instance can mount this drive and read files from it to get information that is normally available through the metadata service. This metadata is different from the user data.
+
+コンフィグドライブを使用するユースケースとして、インスタンスへの IP アドレスの割り当てに DHCP を使用しない場合に (IP アドレス、ネットマスク、ゲートウェイなどの) ネットワーク設定を config ドライブで渡すことなどが挙げられます。コンフィグドライブは、インスタンスのネットワーク設定が設定される前にマウント、アクセスできるため、コンフィグドライブを使用して IP アドレス設定を転送することができます。
+
+コンフィグドライブは、ISO 9660 または VFAT のファイルシステムをマウントできるゲストオペレーティングシステムからであればどれでも使用することができます。この機能は、最近のオペレーティングシステムのすべてで利用できるはずです。
+
+
+
+cloud-init
+
+sample code
