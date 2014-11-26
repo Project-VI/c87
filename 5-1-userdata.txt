@@ -12,14 +12,417 @@ cloud-initはOpenStack固有のテクノロジーではありません。マシ�
 http://blog.suz-lab.com/2013/01/cloud-init.html
 
 インストール
-  redhat
-  debian
+  RHEL6/CentOS6
+  rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  yum install cloud-init
+
+  Ubuntu/Debian
+  apt-get install cloud-init
+
 実用例
-  sample code
-    ネットワーク設定
+cloud-initを利用することでインスタンスの起動時に任意スクリプトを実行することができます。
+例としてGlanceイメージからNovaでインスタンスをブートする際に固定IPを設定する手順を紹介します。
+まず、設定ファイルの以下の項目を追記します。
 
-データベースサーバ
-  MariaDB
+# cat /etc/cloud/cloud.cfg
+cloud_final_modules:
+ - scripts-per-once
+ - scripts-per-boot
+ - scripts-per-instance
 
-メッセージングキュー
-  RabbitMQ
+追加した内容は下記となります。
+  scripts-per-once
+  "/var/lib/cloud/scripts/per-once/"以下のスクリプトを実行
+    * 初回起動時に実行 (OpenStack環境ではユーザが独自イメージを作成する際に実行される)
+
+  scripts-per-boot
+  "/var/lib/cloud/scripts/per-boot/"以下のスクリプトを実行
+    * リブート時に実行
+
+  scripts-per-instance
+  "/var/lib/cloud/scripts/per-instance/"以下のスクリプトを実行
+    * Novaでインスタンスを初回ブートする時に実行
+
+インスタンスへの固定IPの設定は初回ブート時に必要な作業なので、scripts-per-instanceを利用する。
+以下のとおり、スクリプトを配置します。
+# cd /var/lib/cloud/scripts
+# tree `pwd`
+/var/lib/cloud/scripts
+├── per-instance
+│   └── per-instance.sh
+
+スクリプトの中身は以下のとおりです。
+# cat per-instance.sh
+#!/bin/bash
+/root/bootstrap/networking.py
+
+/root/bootstrap配下に固定IPを設定するためのPythonスクリプトを配置します。
+# cd /root/bootstrap
+# tree `pwd`
+/root/bootstrap
+├── lib
+│   ├── __init__.py
+│   ├── cmd_args.py
+│   ├── exception.py
+│   ├── gateway.py
+│   ├── ip_addr.py
+│   └── util.py
+└── networking.py
+
+処理の流れとしては、config_driveをマウントし、ipconfigコマンド、routeコマンドを使いIP設定を行い、最後にconfig_driveをアンマウントするという流れです。
+当然、次回リブートすると設定は消えてしまうので、ブート後ネットワークの設定ファイルを修正する必要がありますが、このスクリプトにより初回ブート時に自動でsshできるようになります。
+Pythonスクリプトの中身は以下のとおりです。
+# cat networking.py
+#!/usr/bin/env python
+# coding=utf-8
+
+
+"""
+networking.py: Set static ip address.
+"""
+
+
+import logging
+import os
+import sys
+
+
+from lib import exception
+from lib import gateway
+from lib import ip_addr
+from lib import util
+
+
+def main():
+    # Define logging handler.
+    logging.basicConfig(level = logging.INFO,
+        filename = "/root/networking.log",
+        format = "%(asctime)s %(levelname)-7s %(message)s")
+
+    # Check Python version
+    if sys.version_info < (2, 6):
+        raise exception.UnsupportedPythonVersionError(sys.version)
+
+    # Make Config Drive Directory.
+    configdrive_path = "/mnt/configdrive"
+    if not os.path.exists(configdrive_path):
+        os.mkdir(configdrive_path)
+
+    # Mount config drive.
+    mount_ret = util.mount(configdrive_path)
+    if mount_ret is not 0:
+        raise exception.CommandFailedError("mount")
+
+    # Get node ip address.
+    node_ip_addr = ip_addr.get_ip(configdrive_path)
+    logging.info("Static IP Address is %s" % node_ip_addr)
+
+    # Set ip address.
+    set_ip_ret = ip_addr.set_ip(node_ip_addr)
+    if set_ip_ret is not 0:
+        raise exception.CommandFailedError("set_ip")
+
+    # Get gateway ip address.
+    gateway_ip_addr = gateway.get_gw(node_ip_addr)
+    logging.info("Static Gateway IP Address is %s" % gateway_ip_addr)
+
+    # Set default gateway.
+    set_gw_ret = gateway.set_gw(gateway_ip_addr)
+    if set_gw_ret is not 0:
+        raise exception.CommandFailedError("set_gw")
+
+    # Unmount config drive.
+    umount_ret = util.umount(configdrive_path)
+    if umount_ret is not 0:
+        raise exception.CommandFailedError("umount")
+
+
+if __name__ == '__main__':
+    main()
+
+
+# cat lib/cmd_args.py
+import logging
+
+
+def mount(cdrom_device, mount_point):
+    """Command line to mount cdrom.
+
+    Args:
+        mount_point: Mount point of cdrom.
+        cdrom_device: Mounted CD Device
+
+    Returns:
+        Strings for running mount command.
+    """
+    mount_list = ["mount", "-o", "ro", str(cdrom_device), str(mount_point)]
+
+    return mount_list
+
+
+def umount(mount_point):
+    """Command line to umount cdrom.
+
+    Args:
+        mount_point: Mount point of cdrom.
+
+    Returns:
+        Strings for running umount command.
+    """
+    umount_list = ["umount", str(mount_point)]
+
+    return umount_list
+
+
+def set_ip(ip_addr):
+    """Command line to set ip address.
+
+    Args:
+        ip_addr: Instance ip address.
+
+    Returns:
+        Strings for running set ip address command.
+    """
+    set_ip_list = ["ifconfig", "eth0", str(ip_addr),
+                   "netmask", "255.255.255.0"]
+
+    return set_ip_list
+
+
+def set_gw(gateway):
+    """Command line to set gateway ip address.
+
+    Args:
+        gateway: Instance gateway ip address.
+
+    Returns:
+        Strings for running set gateway command.
+    """
+    set_gw_list = ["route", "add", "default", "gw", str(gateway)]
+
+    return set_gw_list
+
+
+# cat lib/exception.py
+import logging
+
+
+class AbortException(Exception):
+    # Base error class
+    pass
+
+
+class UnsupportedPythonVersionError(AbortException):
+    """Raised on unsupported Python versions.
+
+    Args:
+        version: Current Python Version.
+
+    Returns:
+        Strings for Error Logging.
+    """
+    def __init__(self, version):
+        AbortException.__init__(self)
+        self.version = version
+
+    def __str__(self):
+        return logging.error("Python %s is unsupported, requires "
+                             "at least Python 2.6." % self.version)
+
+
+class UnsupportedLinuxDistribution(AbortException):
+    """Raised on unsupported Linux distribution.
+
+    Args:
+        linux_dist: Current Linux Distribution
+
+    Returns:
+        Strings for Error Logging.
+    """
+    def __init__(self, linux_dist):
+        AbortException.__init__(self)
+        self.linux_dist = linux_dist
+
+    def __str__(self):
+        return logging.error("%s is unsupported linux distribution." %
+                             str(self.linux_dist))
+
+
+class CommandFailedError(AbortException):
+    """Raised on command failed.
+
+    Args:
+        cmd: Failed command.
+
+    Returns:
+        Strings for Error Logging.
+    """
+    def __init__(self, cmd):
+        AbortException.__init__(self)
+        self.cmd = cmd
+
+    def __str__(self):
+        return logging.error("Failed Command: %s" % self.cmd)
+
+
+# cat lib/gateway.py
+import re
+
+
+import cmd_args
+import util
+
+
+def get_gw(ip_addr):
+    """Get default gateway.
+
+    Args:
+        ip_addr: Node ip address.
+
+    Returns:
+        Strings included gateway address.
+    """
+    return ("%s.%s" % (re.search("\d+\.\d+\.\d+", ip_addr).group(0), "254"))
+
+
+def set_gw(gateway):
+    """Set default gateway.
+
+    Args:
+        gateway: Gateway ip address.
+
+    Returns:
+        Command result return code.
+    """
+    set_gw_cmd = cmd_args.set_gw(gateway)
+    returncode = util.executor(set_gw_cmd)
+
+    return returncode
+
+
+
+# cat lib/ip_addr.py
+import cmd_args
+import util
+
+
+def get_ip(configdrive_path):
+    """Get ip address.
+
+    Args:
+        None
+
+    Returns:
+        Strings included ip address.
+    """
+
+    metadata = util.get_metadata(configdrive_path)
+
+    return metadata["local-ipv4"]
+
+
+def set_ip(ip_addr):
+    """Set ip address.
+
+    Args:
+        ip_addr: Node ip address.
+
+    Returns:
+        Command result return code.
+    """
+    set_ip_cmd = cmd_args.set_ip(ip_addr)
+    returncode = util.executor(set_ip_cmd)
+
+    return returncode
+
+
+
+# cat lib/util.py
+import json
+import logging
+import platform
+import re
+import subprocess
+import sys
+
+
+import cmd_args
+import exception
+
+
+def executor(cmd):
+    """Exception handler for running execute function.
+
+    Args:
+        cmd: Command arguments
+    """
+    try:
+        logging.info("%s" % str(cmd))
+        return subprocess.check_call(cmd)
+    except subprocess.CalledProcessError as exc:
+        logging.error("Error code is %d" % int(exc.returncode))
+        return int(exc.returncode)
+    except Exception as msg:
+        logging.error("Error: %s" % str(msg))
+        pass
+
+
+def mount(mount_point):
+    """Perform a mount.
+
+    Args:
+        mount_point: Mount point of cdrom.
+
+    Returns:
+        Command result return code.
+    """
+    linux_dist = platform.linux_distribution()
+
+    if linux_dist[0] == "CentOS":
+        if re.match(r"5.\d+", linux_dist[1]):
+            cdrom_device = "/dev/cdrom"
+        elif re.match(r"6.\d+", linux_dist[1]):
+            cdrom_device = "/dev/disk/by-label/config-2"
+    elif linux_dist[0] == "Ubuntu":
+        cdrom_device = "/dev/disk/by-label/config-2"
+    else:
+        raise exception.UnsupportedLinuxDistribution(linux_dist)
+
+    mount_cmd = cmd_args.mount(cdrom_device, mount_point)
+    returncode = executor(mount_cmd)
+
+    return returncode
+
+
+def umount(mount_point):
+    """Perform a umount.
+
+    Args:
+        mount_point: Mount point of cdrom.
+
+    Returns:
+        Command result return code.
+    """
+    umount_cmd = cmd_args.umount(mount_point)
+    returncode = executor(umount_cmd)
+
+    return returncode
+
+
+def get_metadata(configdrive_path):
+    """Get metadata.
+
+    Args:
+        None
+
+    Returns:
+        Python object included metadata.
+    """
+    # Read json file.
+    meta_json = "".join([configdrive_path, "/ec2/latest/meta-data.json"])
+    with open(meta_json, "r") as f:
+        metadata = json.load(f)
+
+    return metadata
+
+
