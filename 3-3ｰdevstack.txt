@@ -1,0 +1,31 @@
+devstack動いてる？
+
+動いてる？見てみましょう。新しい端末を開いて、
+
+screen -x stack
+
+お、何か起こりましたね。Screenです。Screen？そこから説明するのはめんどくさいのでやめます。
+devstackにおいて、OpenStackの各コンポーネントはscreenの中で動きます。psしてみましょう。上のstackという名前でセッションができるので、
+
+devstack詳解
+
+devstackには多くの設定項目が存在します。しかし、そのほとんどには適切なデフォルト値が設定されています。そのため、特に設定を変更せずとも、それなりに動くようになります。問題は、デフォルトでは起動されないコンポーネントがあります。たとえば、以下のように設定ファイルを書くと、devstackで起動できるすべてのコンポーネントを起動することができます。
+
+enable_service tempest
+enable_service ceilometer ceilometer-acompute ceilometer-acentral ceilometer-anotification ceilometer-collector ceilometer-api
+enable_service s-proxy s-object s-container s-account
+enable_service trove tr-api tr-tmgr tr-cond
+enable_service sahara
+enable_service zaqar-server
+disable_service heat h-eng h-api h-api-cfn h-api-cw 
+
+tempestは結合テスト、ceilometerはOpenStack環境のリソース使用の解析、s-*はオブジェクトストレージシステムのSwift、troveはデータベースサービス。saharaはHadoopクラスタを提供する機能、zaqarはキューイングサービス、heatはサーバーのオーケストレーションです。これ全部起動するとどうなるかと言うと、ものっすごいメモリを消費します。８GBくらいは欲しいですね。
+
+他にも便利な設定値があります
+
+RECLONE=yes
+VOLUME_BACKING_FILE_SIZE=16M
+SCREEN_HARDSTATUS='%{= .b}%-Lw%{=b .r}%>%n%f %t*%{= .b}%+Lw%< %-=%{g}(%{d}%H/%l%{g})'
+ENABLE_HTTPD_MOD_WSGI_SERVICES=False 
+
+RECLONEは、devstack起動時に最新のソースコードを毎回Cloneしてくるか否か。
