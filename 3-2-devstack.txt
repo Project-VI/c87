@@ -2,30 +2,19 @@
 　まずLinuxが必要です。devstackのコードを見るとサポートされているディストリビューションは、
 　Fedora21とUbuntu14.04で試してみましょう。執筆時点ではUbuntu14.10はサポート外でした。mariadb-serverを使わない点や、openswanが14.04のリポジトリに無いことなど、があります。FedoraはServer, Workstationどちらでもよいと思います。今回はFedora Server 21 betaを使用しました。Serverはyum、Workstationはdnf。Serverでdnfって打ったら、そんなコマンド無いって言われたよ。
 　お試しで動かす場合にSELinuxは邪魔でしかありませんので、Disable、は負けを認めた感じになりますので、Permissiveにしておきましょう
-
 vim /etc/selinux/config
 reboot
-
-　ディストリビューションのインストールに関しては割愛します。ファイルシステムは？ネットワークインターフェースは？カーネルのパラメータは？IntelVT効いてないとだめじゃない？
-　スペックは大きめにしておく必要があります。僕はRAM4GB 4Cores 32GB Btrfsで開発していますが、ギリギリです。最低限のコンポーネントを起動させておくには問題ありませんが、devstackがサポートするすべてのコンポーネントを同時に起動させておくには8GBほど用意しておくほうがよいでしょう。
+　ディストリビューションのインストールに関しては割愛しますが、スペックは大きめにしておく必要があります。僕はRAM4GB 4Cores 32GB Btrfsで開発していますが、ギリギリです。最低限のコンポーネントを起動させておくには問題ありませんが、devstackがサポートするすべてのコンポーネントを同時に起動させておくには8GBほど用意しておくほうがよいでしょう。
 　Linuxのインストールが終わったら、まずはdevstackを取得してみましょう。devstackは残念ながらパッケージでは用意されていません。Cloneしてくる必要があります。
-
 git clone https://github.com/openstack-dev/devstack.git
-
 　え？Gitが無いって？貴方Ubuntuユーザーですね？Ubuntuはいつだってそうでした。
-
 apt-get install build-essentials
-
 　Fedoraでは以下のパッケージをインストールしておくと後の作業が楽でしょう。
-
 yum group install 'Development Tools'
-
 　あ、そもそもネットワークが繋がってないです？それは知りません。ますはFlets光とかでググってみましょう。ああそうかネット繋がってないのか。じゃあ諦めましょう。それは創造のチャンスです。ネットワークアクセスが無くても、OpenStackの意義は、どこかにあるはずです。そうでないなら、さっさとLanケーブルなりWiFiなりにつなぎましょう。もうDHCPでいいですよ。それでも動きます。
 　devstackディレクトリをlsしてみましょう。ええ、何が何だかわかりませんね。ドキュメントにはlocalrcを書いてstack.shしろって言ってますが、all_in_oneとそうじゃないのとが書いてあったり、VMとMachineで違ったり、何かIPレンジ決めろとか書いてあるし、やる気なくなりますね。でも大丈夫、必要ありません。しかし、設定ファイルは必要です。それがlocalrcというファイルです。ありますか？ありませんね。そう自分で作らないといけません。ひな形ぐらい用意しておいて欲しいですね。例えば以下のように書いてみましょう
-
 disable_service n-net
 enable_service neutron q-svc q-agt q-dhcp q-l3 q-meta
-
 　この設定が何かと言いますと、nova-networkを無効化して、代わりにNeutronを有効化しています。#で始まる行はコメントです。勘のいい方は気付くかと思いますが、そうです、これはシェルスクリプトです。disable_service/enable_serviceはBashの関数です。
 　暗号かよ。disable/enableはなんとなくわかるけど…それならenable_neutronとかじゃないの？enable_service neutronとか？
 　いい質問ですね。いろいろ回答できるいい質問です。かつて、VMのネットワーク管理をする部分はnova-networkとしてnovaの一部分として組み込まれていました。ところが、ネットワーク大好きレガシーおじさん達のせいで、どんどんネットワーク周辺のコードが肥大化し、ついにnovaの一機能からquantumという名で独立し、個別にネットワークの機能を拡張していくことになりました。そのquantumも成熟し、ついにOpenStackの中核を成すコンポーネントに成長し、Neutronと名を変え、OpenStack内屈指の難解コンポーネントになったのでした。
@@ -44,19 +33,14 @@ instead of gitは--systemで
 
 　何をもってしてLinuxのインストールが終わったか、というのは人によるでしょう。ここでは、インストーラーでの作業が終了し、パッケージのアップデートが終わっている状態とします。(apt-get update && apt-get upgrade, yum update, dnf upgrade)普通は他にもやりたいことがあるかと思います。(vim, emacs, zsh, screen, tmux, tig ...)執筆時には以下をインストールしました
 vim zsh tmux tig
-
 　Fedora21 ServerにはCockpitというサーバーリソース管理サービスがデフォルトでインストールされています。有効化はされていないので、以下で起動を指定し、9090ポートをWebブラウザで開くと、リソース使用状況を綺麗なページで見ることができます。まぁ、出来はまだまだですが。
-
 systemctl start cockpit
-
 　CPU、メモリ、ディスク、ネットワーク、起動中のサービスなどの基本情報に加えて、ユーザー情報、Dockerサービス、Dockerコンテナ、journalctlなんかもWebから見ることができます。
 
 devstackを動かしたい
 
 　ところでdevstackが何をやっているかと言いますと、OpenStackの公式GitリポジトリからソースコードをCloneしてきて、必要なPythonパッケージのインストールをし、設定ファイル自動生成し、コンポーネントを順番に起動していきます。起動したら、テスト用の初期データの投入や、テスト用のOSイメージファイルなどのダウンロード・登録をします。つまり、OpenStackが何となく動く状態にまで持っていってくれます。localrcも書いたし、とりあえずstack.shを実行してみましょう。pwdはdevstackです。
-
 ./stack.rc
-
 　延々とメッセージが出ますね。何をやっているかはあとで説明するとして、ちょっと待ってみましょう。何か聞かれませんか？まずはこれ：
 ################################################################################
 ENTER A PASSWORD TO USE FOR THE DATABASE.
