@@ -1,10 +1,10 @@
 2節devstackを使ってみる
 　まずLinuxが必要です。devstackのコードを見るとサポートされているディストリビューションは、
-　Fedora21とUbuntu14.04で試してみましょう。執筆時点ではUbuntu14.10はサポート外でした。mariadb-serverを使わない点や、openswanが14.04のリポジトリに無いことなど、があります。FedoraはServer, Workstationどちらでもよいと思います。今回はFedora Server 21 betaを使用しました。Serverはyum、Workstationはdnf。Serverでdnfって打ったら、そんなコマンド無いって言われたよ。
+　Fedora21で試してみましょう。執筆時点ではUbuntu14.10はサポート外でした。ちょっとコードにパッチをあてれば動く事には動くのですが、VPNaaS（VPN as a Service）を構築する際に必要になるopenswanというパッケージがUbuntu14.04のリポジトリに無いことが分かりました。FedoraはServerでもWorkstationでも、どちらでもよいと思います。今回はFedora Server 21 betaを使用しました。Serverはyum、Workstationはdnfなんですよね。Serverでdnfって打ったら、そんなコマンド無いって言われたよ。
 　お試しで動かす場合にSELinuxは邪魔でしかありませんので、Disable、は負けを認めた感じになりますので、Permissiveにしておきましょう
 vim /etc/selinux/config
 reboot
-　ディストリビューションのインストールに関しては割愛しますが、スペックは大きめにしておく必要があります。僕はRAM4GB 4Cores 32GB Btrfsで開発していますが、ギリギリです。最低限のコンポーネントを起動させておくには問題ありませんが、devstackがサポートするすべてのコンポーネントを同時に起動させておくには8GBほど用意しておくほうがよいでしょう。
+　OSのインストールとセットアップに関しては割愛しますが、スペックは大きめにしておく必要があります。僕はRAM4GB 4Cores 32GB Btrfsで開発していますが、ギリギリです。最低限のコンポーネントを起動させておくには問題ありませんが、devstackがサポートするすべてのコンポーネントを同時に起動させておくには8GBほど用意しておくほうがよいでしょう。
 　Linuxのインストールが終わったら、まずはdevstackを取得してみましょう。devstackは残念ながらパッケージでは用意されていません。Cloneしてくる必要があります。
 git clone https://github.com/openstack-dev/devstack.git
 　え？Gitが無いって？貴方Ubuntuユーザーですね？Ubuntuはいつだってそうでした。
@@ -12,36 +12,21 @@ apt-get install build-essentials
 　Fedoraでは以下のパッケージをインストールしておくと後の作業が楽でしょう。
 yum group install 'Development Tools'
 　あ、そもそもネットワークが繋がってないです？それは知りません。ますはFlets光とかでググってみましょう。ああそうかネット繋がってないのか。じゃあ諦めましょう。それは創造のチャンスです。ネットワークアクセスが無くても、OpenStackの意義は、どこかにあるはずです。そうでないなら、さっさとLanケーブルなりWiFiなりにつなぎましょう。もうDHCPでいいですよ。それでも動きます。
-　devstackディレクトリをlsしてみましょう。ええ、何が何だかわかりませんね。ドキュメントにはlocalrcを書いてstack.shしろって言ってますが、all_in_oneとそうじゃないのとが書いてあったり、VMとMachineで違ったり、何かIPレンジ決めろとか書いてあるし、やる気なくなりますね。でも大丈夫、必要ありません。しかし、設定ファイルは必要です。それがlocalrcというファイルです。ありますか？ありませんね。そう自分で作らないといけません。ひな形ぐらい用意しておいて欲しいですね。例えば以下のように書いてみましょう
+　devstackディレクトリをlsしてみましょう。ええ、何が何だかわかりませんね。ドキュメントにはlocalrcを書いてstack.shしろって言ってますが、all_in_oneとそうじゃないのとが書いてあったり、VMとMachineで違ったり、何かIPレンジ決めろとか書いてあるし、やる気なくなりますね。でも大丈夫、必要ありません。しかし、設定ファイルは必要です。それがlocalrcというファイルです。ありますか？ありませんね。そう自分で作らないといけません。ひな形ぐらい用意しておいて欲しいですね。例えば以下のように書いて保存してみましょう：
 disable_service n-net
 enable_service neutron q-svc q-agt q-dhcp q-l3 q-meta
-　この設定が何かと言いますと、nova-networkを無効化して、代わりにNeutronを有効化しています。#で始まる行はコメントです。勘のいい方は気付くかと思いますが、そうです、これはシェルスクリプトです。disable_service/enable_serviceはBashの関数です。
-　暗号かよ。disable/enableはなんとなくわかるけど…それならenable_neutronとかじゃないの？enable_service neutronとか？
+　この設定が何かと言いますと、nova-networkを無効化して、代わりにNeutronを有効化しています。勘のよい方は気付くかと思いますが、そうです、これはシェルスクリプトです。disable_service/enable_serviceはBashの関数です。
+　「暗号かよ。disable/enableはなんとなくわかるけど…それならenable_neutronとかじゃないの？enable_service neutronとか？」
 　いい質問ですね。いろいろ回答できるいい質問です。かつて、VMのネットワーク管理をする部分はnova-networkとしてnovaの一部分として組み込まれていました。ところが、ネットワーク大好きレガシーおじさん達のせいで、どんどんネットワーク周辺のコードが肥大化し、ついにnovaの一機能からquantumという名で独立し、個別にネットワークの機能を拡張していくことになりました。そのquantumも成熟し、ついにOpenStackの中核を成すコンポーネントに成長し、Neutronと名を変え、OpenStack内屈指の難解コンポーネントになったのでした。
 　もうおわかりですね。n-netはnova-networkのことです。これは古き良きものなのでdisableします。かわりにenable_service neutronします。neutronを構成するサブコンポーネントの起動もします。q-*がそれです。qとは？そう、旧名のquantumのことです。え、nじゃねーの？だってそりゃ、nじゃnovaと被るじゃん。
 　……やってられませんね。人間味溢れるシステム、それがOpenStackなのです。初心者お断りです。さて上の２行を書いたらあとは./stack.shするだけです。それがいけないのか、それだけのことだからいけないのか。
 
-memo
+devstackを動かす
 
-　devstackはCeilomerterもサポートしています。計測データの保管にmongodbを使うのですが、mongodbは起動時に各データベースごと5GBのディスクを確保しようとします。CeilometerはDBを3つ必要としますので、15GBも消費されてしまうことになります。Ceilometerを試す際には、/etc/mongodb.confに以下を追記し、大きなファイルを作成しないようにしておきましょう。
-
-smallfiles = true
-
-proxy
-
-instead of gitは--systemで
-
-　何をもってしてLinuxのインストールが終わったか、というのは人によるでしょう。ここでは、インストーラーでの作業が終了し、パッケージのアップデートが終わっている状態とします。(apt-get update && apt-get upgrade, yum update, dnf upgrade)普通は他にもやりたいことがあるかと思います。(vim, emacs, zsh, screen, tmux, tig ...)執筆時には以下をインストールしました
-vim zsh tmux tig
-　Fedora21 ServerにはCockpitというサーバーリソース管理サービスがデフォルトでインストールされています。有効化はされていないので、以下で起動を指定し、9090ポートをWebブラウザで開くと、リソース使用状況を綺麗なページで見ることができます。まぁ、出来はまだまだですが。
-systemctl start cockpit
-　CPU、メモリ、ディスク、ネットワーク、起動中のサービスなどの基本情報に加えて、ユーザー情報、Dockerサービス、Dockerコンテナ、journalctlなんかもWebから見ることができます。
-
-devstackを動かしたい
-
-　ところでdevstackが何をやっているかと言いますと、OpenStackの公式GitリポジトリからソースコードをCloneしてきて、必要なPythonパッケージのインストールをし、設定ファイル自動生成し、コンポーネントを順番に起動していきます。起動したら、テスト用の初期データの投入や、テスト用のOSイメージファイルなどのダウンロード・登録をします。つまり、OpenStackが何となく動く状態にまで持っていってくれます。localrcも書いたし、とりあえずstack.shを実行してみましょう。pwdはdevstackです。
-./stack.rc
-　延々とメッセージが出ますね。何をやっているかはあとで説明するとして、ちょっと待ってみましょう。何か聞かれませんか？まずはこれ：
+　ところでdevstackが何をやっているかと言いますと、OpenStackの公式GitリポジトリからソースコードをCloneしてきて、必要なPythonパッケージのインストールをし、設定ファイル自動生成し、コンポーネントを順番に起動していきます。起動したら、テスト用の初期データの投入や、テスト用のOSイメージファイルなどのダウンロードとそのイメージの登録をします。これでOpenStackが何となく動く状態にまで持っていってくれます。
+　先ほどlocalrcも書いたし、とりあえずdevstackを実行してみましょう。pwdをdevstackにして：
+./stack.sh
+　おっと延々とメッセージが出はじめましたね。それぞれが何をやっているかはあとで説明するとして、ちょっと待ってみましょう。プロンプトが出て、何か聞かれませんか？まずはこれでしょう：
 ################################################################################
 ENTER A PASSWORD TO USE FOR THE DATABASE.
 ################################################################################
@@ -49,8 +34,7 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　OpenStackは必要なデータを保存しておくシステムとして、データベースシステムを必要とします。MySQLでもsqliteでもpostgresqlでも（たぶん）いいのですが、devstackはMySQLを使おうとします。つまり、勝手にインストールします。そして、勝手に起動します。（自動起動はしない。）ます聞かれるのは、このデータベースのrootパスワードです。
-次はこれ：
+　OpenStackは必要なデータを保存しておくシステムとして、データベースシステムを必要とします。MySQLでもsqliteでもpostgresqlでも（たぶん）いいのですが、devstackはMySQLを使おうとします。つまり、勝手にインストールします。そして、勝手に起動します。（自動起動はしない、と思う。）ます聞かれたのは、このデータベースのrootパスワードです。次はこれ：
 ################################################################################
 ENTER A PASSWORD TO USE FOR RABBIT.
 ################################################################################
@@ -58,7 +42,10 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　出ましたねラビット。これが何かと言いますと、DBusみたいなもんだと僕は思っていますが、教科書的には「キュー」です。OpenStackはさまざまなコンポーネントやプロセス、あるいは上述のRDBMSやMongoDBのような別のデータストアを有機的に組み合わせて稼働するシステムです。このキューはそのプロセス間の通信を担います。それぞれのプロセスは相手の様子を鑑みず、どんどん要求を差し込むため、これをキューイングしておく必要があります。相手が要求を受け入れられるなら送りますし、暇な奴がキューから自律的に取り出して処理したりします。素晴らしい組織体系ですね。あなたの会社はどうですか？でも、貴方はそんな組織を望んでいますか？胸に手を置いて考えてみましょう。ミッシェル・フーコーの『監獄の誕生』読みました？はい、読みましたね。では、もう一度。あなたはそんな素晴らしい組織に属し、その部分を担いたいと、本当にそう思っていますか？
+　出ましたねラビット。これが何かと言いますと、DBusみたいなもんだと僕は思っていますが、教科書的には「キュー」です。OpenStackはさまざまなコンポーネントやプロセス、あるいは上述のRDBMSやMongoDBのような別のデータストアを有機的に組み合わせて稼働するシステムです。このキューはそのプロセス間の通信を担います。
+　それぞれのプロセスは相手の様子を鑑みず、どんどん要求を差し込むため、これをキューイングしておく必要があります。相手が要求を受け入れられる状態にあるならば送りますし、暇な奴がキューから自律的に取り出して処理したりします。
+　と、それはそうなのですが、このキューの本当の利点は、実はこの点においてではありません。このキューがあることで、送信者と受信者の数を自在に増減することができるのです。ものすごい量のVM作成依頼が急に来たとしても、逆に増やしすぎて無駄な送受信者を減らすこともできます。受信者だけ増やすこともできるでしょう。システムの強度を柔軟に変更することができます。年末だからって、予算を使い切らないといけないなんてこともありません。とりあえず今必要な分だけで構築し、困ったら少しづつ増強していく運用スタイルをすることができます。
+　素晴らしい組織体系ですね。あなたの会社はどうですか？でも、貴方はそんな組織を望んでいますか？胸に手を置いて考えてみましょう。ミッシェル・フーコーの『監獄の誕生』読みました？はい、読みましたね。では、もう一度。あなたはそんな素晴らしい組織に属し、その部分を担いたいと、本当にそう思っていますか？まぁどっちにしても、そのような予算の組み方に依存して生活を営んでいる人で構成された国ですので、それを守るのが正義なんじゃないですかね。まぁいいや。次はこれです：
 ################################################################################
 ENTER A SERVICE_TOKEN TO USE FOR THE SERVICE ADMIN TOKEN.
 ################################################################################
@@ -66,7 +53,7 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　これから以下は、デフォルトのパスワード設定です。ADMIN TOKENは、管理者用の操作を行うための特別パスワードみたいなものです。次もパスワードです。
+　これから以下は、デフォルトのパスワード設定です。ADMIN TOKENは、管理者用の操作を行うための特別パスワードみたいなものです。次もパスワードです：
 ################################################################################
 ENTER A SERVICE_PASSWORD TO USE FOR THE SERVICE AUTHENTICATION.
 ################################################################################
@@ -74,7 +61,7 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　各コンポーネントは、OpenStackシステムを担う部分ですが、それでも操作にはOpenStackのユーザー同様の認証と認可が必要です。つまり、各コンポーネントも、ユーザー名とパスワードを持ちます。しかし、さすがに普通のユーザーではないので、ロールが違います。各コンポーネントはServiceというロールを持ち、Keystoneによる認証と認可を受けます。というわけで、サービスロールを持つOpenStackコンポーネントユーザーのパスワードです。
+　各コンポーネントは、OpenStackシステムを担う部分ですが、それでも操作にはOpenStackのエンドユーザーと同様の認証と認可が必要になります。つまり、各コンポーネントもユーザー名とパスワードを持っている必要があります。しかし、さすがに普通のユーザーではなく、ロールが違います。各コンポーネントはServiceというロールを持ち、Keystoneによる認証と認可を受けます。というわけで、サービスロールを持つOpenStackコンポーネントユーザーのパスワードです。で、最後は：
 ################################################################################
 ENTER A PASSWORD TO USE FOR HORIZON AND KEYSTONE (20 CHARS OR LESS).
 ################################################################################
@@ -82,29 +69,9 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　で、最後はOpenStackお試しユーザーのための、テストユーザー用のパスワードです。たくさんパスワードありますね。まぁとりあえず全部passwordとかにしておきましょう。あぁ、そういえば、ちょっと前に自分の目標をパスワードにすると生活が捗るっていうのをFacebookでみかけましたね。そんなことが普通になる世界を想像してみましょう。ああ、なんというユートピア。
-
-memo
-
-　Fedoraにはいつものことですが、パッケージが壊れてます。Fedora 21 Serverでdevstack走らせてみると、pcre-develとpcreの依存が壊れてます。
-% sudo yum install pcre-devel
-読み込んだプラグイン:langpacks
-依存性の解決をしています
---> トランザクションの確認を実行しています。
----> パッケージ pcre-devel.x86_64 0:8.35-7.fc21 を インストール
---> 依存性の処理をしています: pcre(x86-64) = 8.35-7.fc21 のパッケージ: pcre-devel-8.35-7.fc21.x86_64
---> 依存性解決を終了しました。
-エラー: パッケージ: pcre-devel-8.35-7.fc21.x86_64 (fedora)
-             要求: pcre(x86-64) = 8.35-7.fc21
-            インストール: pcre-8.35-8.fc21.x86_64 (@updates-testing)
-                pcre(x86-64) = 8.35-8.fc21
-            利用可能: pcre-8.35-7.fc21.x86_64 (fedora)
-                pcre(x86-64) = 8.35-7.fc21
- 問題を回避するために --skip-broken を用いることができます。
- これらを試行できます: rpm -Va --nofiles --nodigest
-　こんなことで心折れていてはいけません。リラダンの『未来のイヴ』読む方がよっぽど大変ですよ。あれは大変でした。まぁとりあえず即座に：
-yum downgrade pcre
-　さて、必要なパッケージのインストール後、OpenStackのリポジトリから各コンポーネントのソースコードがCloneされていくのが見えると思います。その後、各コンポーネントが起動され、最後にテストデータが次々と投入されていきます。devstackは皆さんを以下の言葉で優しく包んでくれるでしょう：
+　これはOpenStackお試し環境のための、テストユーザー用のパスワードです。
+　たくさんパスワードありましたね。まぁとりあえず全部passwordとかにしておきましょう。あぁ、そういえば、ちょっと前に自分の目標をパスワードにすると生活が捗るっていうのをFacebookでみかけましたね。そんなことが普通になる世界を想像してみましょう。ああ、なんというユートピア。
+　さて、必要なパッケージのインストール後、OpenStackのリポジトリから各コンポーネントのソースコードがCloneされていくのが見えると思います。その後、各コンポーネントが起動され、最後にテストデータが次々と投入されていきます。これが終われば、devstackは皆さんを以下の言葉で優しく包んでくれるでしょう：
 Horizon is now available at http://192.168.226.131/
 Keystone is serving at http://192.168.226.131:5000/v2.0/
 Examples on using novaclient command line is in exercise.sh
