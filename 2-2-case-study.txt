@@ -1,5 +1,5 @@
 2節 国内事例
-　2014年2月13～14日に開催されたOpenStack Days Tokyo 2014では、グリー、Yahoo! JAPAN、NECがぞれぞれ自社のOpenStack導入事例を公開しました。
+　2014年2月13~14日に開催されたOpenStack Days Tokyo 2014では、グリー、Yahoo! JAPAN、NECがぞれぞれ自社のOpenStack導入事例を公開しました。
 Yahoo! Japan 内製クラウド環境からの移行
 ショッピング、ヤフオク、知恵袋、トラベル、不動産、ブックストア、ゲームなどが利用
 
