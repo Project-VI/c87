@@ -1,28 +1,30 @@
-2節devstackを使ってみる
+devstackを使ってみる
 　まずLinuxが必要です。devstackのコードを眺めてみると、サポートされているディストリビューションはdebian系・Redhat系・SUSE系のようですが、ここはFedora 21で試してみましょう。執筆時点ではUbuntu 14.10はサポート外のようでした。ちょっとコードにパッチをあてれば動く事には動くのですが、VPNaaS（VPN as a Service）を構築する際に必要になるopenswanというパッケージがUbuntu 14.10のソースに無かったりして、力を出し切ることはできなさそうでした。Fedoraは21からServer・Workstation・Cloudとそれぞれに特化したバージョンを公開していますが、どれでもよいと思います。今回はFedora Server 21 betaを使用しました。GNOME 3採用の時ほどにはあまり知られていないのですが、yumが廃止の方向でして、代わりにdnfというパッケージ管理システムが導入されています。まぁ結局扱うのはRPMなんですけどね。なんですけど、ServerはyumでWorkstationはDNFなんですよね。Serverでdnfって打ったらそんなコマンド無いって言われたよ。
 　お試しで動かす場合にSELinuxは邪魔でしかありませんので、Disable、は負けを認めた感じになりますので、Permissiveにしておきましょう
+
 vim /etc/selinux/config
 reboot
 　OSのインストールとセットアップに関しては割愛しますが、スペックは大きめにしておく必要があります。僕は4GB RAM + 4 Cores + 32GB Btrfsで開発していますが、割とギリギリです。最低限のコンポーネントを起動させておくには問題ありませんが、devstackがサポートするすべてのコンポーネントを同時に起動させておくには8GBほどメモリを用意しておくほうがよいでしょう。
 　OSのインストールが終わったら、まずはdevstackを取得してみましょう。devstackは残念ながらパッケージでは用意されていません。git cloneしてくる必要があります。
+
 git clone https://github.com/openstack-dev/devstack.git
-　え？gitが無いって？貴方Ubuntuユーザーですね？Ubuntuはいつだってそうでした。
-apt-get install build-essentials
-　Fedoraでは以下のパッケージをインストールしておくと後の作業が楽でしょう。
+え？gitが無いって？貴方Ubuntuユーザーですね？Ubuntuはいつだってそうでした。
+apt-get install build-essential
+Fedoraでは以下のパッケージをインストールしておくと後の作業が楽でしょう。
 yum group install 'Development Tools'
 　あ、そもそもネットワークが繋がってないです？まぁネットワークアクセスが無くてもOpenStackの意義はどこかにある気もしますが、そうでないなら、さっさとLanケーブルなりWiFiなりにつなぎましょう。DHCPでもいいです。それでも動きます。
-　devstackディレクトリをlsしてみましょう。ええ、何が何だかわかりませんね。ドキュメントにはlocalrcを書いてstack.shしろって言ってますが、all_in_oneとそうじゃないのとが書いてあったり、VMとMachineで違ったり、何かIPレンジ決めろとか書いてあるし、やる気なくなりますね。でも大丈夫、必要ありません。しかし、設定ファイルは必要です。それがlocalrcというファイルです。ありますか？ありませんね。そう自分で作らないといけません。ひな形ぐらい用意しておいて欲しいですね。例えば以下のように書いて保存してみましょう：
+　devstackディレクトリをlsしてみましょう。ええ、何が何だかわかりませんね。ドキュメントにはlocalrcを書いて./stack.shしろって言ってますが、all_in_oneとそうじゃないのとが書いてあったり、VMとMachineで違ったり、何かIPレンジ決めろとか書いてあるし、やる気なくなりますね。でも大丈夫、必要ありません。しかし、設定ファイルは必要です。それがlocalrcというファイルです。ありますか？ありませんね。そう、自分で作らないといけません。ひな形ぐらい用意しておいて欲しいですね。例えば以下のように書いて保存してみましょう：
 disable_service n-net
 enable_service neutron q-svc q-agt q-dhcp q-l3 q-meta
 　この設定が何かと言いますと、nova-networkを無効化して、代わりにNeutronを有効化しています。勘のよい方は気付くかと思いますが、そうです、これはシェルスクリプトです。disable_service・enable_serviceはBashの関数として定義されています。
-　暗号かよ。disable/enableはなんとなくわかるけど…それならenable_neutronとかじゃないの？enable_service neutronとか？
+　暗号かよ。disable/enableはなんとなくわかるけど……それならenable_neutronとかじゃないの？enable_service neutronとか？
 　いい質問ですね。いろいろ回答できるいい質問です。かつて、VMのネットワーク管理をする部分はnova-networkとしてnovaの一部分として組み込まれていました。ところが、ネットワーク大好きレガシーおじさん達のせいで、どんどんネットワーク周辺のコードが肥大化していくことが見え透き、ついにnovaの一機能からquantumという名で独立し、個別にネットワークの機能を拡張していくことになりました。そのquantumも成熟し、ついにOpenStackの中核を成すコンポーネントに成長し、こうなるってくると急に「実はQuantumって商標なんですよねー出すもん出してもらわないとーチラッチラッ」みたいな話があったかなかったか、Neutronと名を変え、OpenStack内屈指の難解コンポーネントになったのでした。
 　もうおわかりですね。n-netはnova-networkのことです。これは古き良きものなのでdisableします。かわりにenable_service neutronします。neutronを構成するサブコンポーネントの起動もします。q-*がそれです。qとは？そう、旧名のquantumのことです。え、nじゃねーの？だってそりゃ、nじゃnovaと被るじゃん。
-　……やってられませんね。人間味溢れるシステム、それがOpenStackなのです。初心者お断りです。さて上の２行を書いたらあとは./stack.shするだけです。それがいけないのか、それだけのことだからいけないのか。
+　……やってられませんね。人間味溢れるシステム、それがOpenStackなのです。初心者お断りです。さて上の２行を書いたらあとは./stack.shするだけです。それだからいけないのか、それだけのことだからいけないのか。
 
 devstackを動かす
 
-　ところでdevstackが何をやっているかと言いますと、OpenStackの公式GitリポジトリからソースコードをCloneしてきて、必要なPythonパッケージのインストールをし、設定ファイル自動生成し、コンポーネントを順番に起動していきます。起動したら、テスト用の初期データの投入や、テスト用のOSイメージファイルなどのダウンロードとそのイメージの登録をします。これでOpenStackが何となく動く状態にまで持っていってくれます。
+ところでdevstackが何をやっているかと言いますと、OpenStackの公式GitリポジトリからソースコードをCloneしてきて、必要なPythonパッケージのインストールをし、設定ファイルを自動生成し、コンポーネントを順番に起動していきます。起動したら、テスト用の初期データの投入や、テスト用のOSイメージファイルなどのダウンロードとそのイメージの登録をします。これでOpenStackが何となく動く状態にまで持っていってくれます。
 　先ほどlocalrcも書いたし、とりあえずdevstackを実行してみましょう。pwdをdevstackにして：
 ./stack.sh
 　おっと延々とメッセージが出はじめましたね。それぞれが何をやっているかはあとで説明するとして、ちょっと待ってみましょう。プロンプトが出て、何か聞かれませんか？まずはこれでしょう：
@@ -52,7 +54,7 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　これから以下は、デフォルトのパスワード設定です。ADMIN TOKENは管理者用の操作を行うための特別パスワードみたいなものです。次もパスワードを聞いてきています：
+これから以下は、デフォルトのパスワード設定です。ADMIN TOKENは管理者用の操作を行うための特別パスワードみたいなものです。次もパスワードを聞いてきています：
 ################################################################################
 ENTER A SERVICE_PASSWORD TO USE FOR THE SERVICE AUTHENTICATION.
 ################################################################################
@@ -60,7 +62,7 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　各コンポーネントはOpenStackシステムを担うサブシステムですが、それでもその連携にはOpenStackのエンドユーザーと同様の認証と認可が必要になります。つまり、各コンポーネントもユーザー名と正しいパスワードを持っている必要があります。しかし、さすがに普通のユーザーではなく、ロールが違います。各コンポーネントはserviceという特殊なロールを割り当てられており、Keystoneによる認証と認可を受けます。というわけで、サービスロールを持つOpenStackコンポーネントユーザーのパスワードをここで決めます。で、最後は：
+各コンポーネントはOpenStackシステムを担うサブシステムですが、それでもその連携にはOpenStackのエンドユーザーと同様の認証と認可が必要になります。つまり、各コンポーネントもユーザー名と正しいパスワードを持っている必要があります。しかし、さすがに普通のユーザーではなく、ロールが違います。各コンポーネントはserviceという特殊なロールを割り当てられており、Keystoneによる認証と認可を受けます。というわけで、サービスロールを持つOpenStackコンポーネントユーザーのパスワードをここで決めます。で、最後は：
 ################################################################################
 ENTER A PASSWORD TO USE FOR HORIZON AND KEYSTONE (20 CHARS OR LESS).
 ################################################################################
@@ -68,9 +70,9 @@ This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
 Enter a password now:
-　これはOpenStackお試し環境のための、テストユーザー用のパスワードです。
+これはOpenStackお試し環境のための、テストユーザー用のパスワードです。
 　たくさんパスワードありましたね。まぁとりあえず全部passwordとかにしておきましょう。あぁ、そういえば、ちょっと前に自分の目標をパスワードにすると生活が捗るっていうのをFacebookでみかけましたね。そんなことが普通になる世界を想像してみましょう。ああ、なんというユートピア。
-　さて、必要なパッケージのインストール後、OpenStackのリポジトリから各コンポーネントのソースコードがcloneされていくのが見えると思います。その後、各コンポーネントが起動され、最後にテストデータが次々と投入されていきます。これが終われば、devstackは皆さんを以下の言葉で優しく包んでくれるでしょう：
+　さて、必要なパッケージのインストール後、OpenStackのリポジトリから各コンポーネントのソースコードがgit cloneされていくのが見えると思います。その後、各コンポーネントが起動され、最後にテストデータが次々と投入されていきます。これが終われば、devstackは皆さんを以下の言葉で優しく包んでくれるでしょう：
 Horizon is now available at http://192.168.226.131/
 Keystone is serving at http://192.168.226.131:5000/v2.0/
 Examples on using novaclient command line is in exercise.sh
