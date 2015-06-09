@@ -1,10 +1,13 @@
-\documentclass[9pt,b5paper]{jsbook}
+\documentclass[9pt,b5paper,tombo]{jsbook}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{listings}
 \usepackage{color}
 
-\lstset{basicstyle={\scriptsize\ttfamily}}
+\lstset{basicstyle={\footnotesize\ttfamily}}
+
+\setlength{\textwidth}{\fullwidth}
+\setlength{\evensidemargin}{\oddsidemargin}
 
 \begin{document}
 
@@ -21,8 +24,8 @@
 \newpage
 
 \thispagestyle{empty}
-\setlength{\textwidth}{\fullwidth}
-\setlength{\evensidemargin}{\oddsidemargin}
+%\setlength{\textwidth}{\fullwidth}
+%\setlength{\evensidemargin}{\oddsidemargin}
 
 \begin{footnotesize}
 
@@ -586,6 +589,7 @@ cloud_final_modules:
 
 /root/bootstrap配下に固定IPを設定するためのPythonスクリプトを配置します。
 
+{\footnotesize
 \begin{verbatim}
 # cd /root/bootstrap
 # tree `pwd`
@@ -599,12 +603,19 @@ cloud_final_modules:
 │   └── util.py
 └── networking.py
 \end{verbatim}
+}
 
 処理の流れとしては、config\_driveをマウントし、ipconfigコマンド、routeコマンドを使いIP設定を行い、最後にconfig\_driveをアンマウントするという流れです。当然、次回リブートすると設定は消えてしまうので、ブート後ネットワークの設定ファイルを修正する必要がありますが、このスクリプトにより初回ブート時に自動でsshできるようになります。Pythonスクリプトの中身は以下で紹介していますので、ご参考下さい。
 
 https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 
 最後に、第５章では、より詳細なOpenStackでインスタンスを生成した際の内部で起こっているブートシーケンスについて順を追って説明します。なお、ここではAPIへの通信はHorizon、もしくはnovaclientによるCLI操作を想定しています。
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=10cm]{./img/boot.pdf}
+  \end{center}
+\end{figure}
 
 \begin{enumerate}
 \item \textbf{Horizon or CLI} ユーザの認証情報を取得しRESTの通信によりKeystoneに認証をかけます
@@ -652,12 +663,6 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
     \end{tabular}
   \end{center}
 \end{table}
-
-\begin{figure}[htbp]
-  \begin{center}
-    \includegraphics[width=10cm]{./img/boot.pdf}
-  \end{center}
-\end{figure}
 
 \chapter{あとがき}
 
@@ -709,8 +714,8 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 
 \newpage
 
-\setlength{\textwidth}{\fullwidth}
-\setlength{\evensidemargin}{\oddsidemargin}
+%\setlength{\textwidth}{\fullwidth}
+%\setlength{\evensidemargin}{\oddsidemargin}
 
 \enlargethispage{\paperwidth}
 \thispagestyle{empty}

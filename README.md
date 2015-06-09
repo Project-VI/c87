@@ -4,6 +4,6 @@ OpenStack [![The GNU General Public License v3.0](http://img.shields.io/badge/li
 The book of OpenStack
 
 ```
-platex main.tex && dvipdfmx -p b5 main.dvi
+platex main && dvipdfmx -p a4 -x 40 -y 58 main  
 ```
 
