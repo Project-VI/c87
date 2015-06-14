@@ -27,9 +27,11 @@
 %\setlength{\textwidth}{\fullwidth}
 %\setlength{\evensidemargin}{\oddsidemargin}
 
-\begin{footnotesize}
+\begin{tiny}
 
-ここはどこかの大学の研究室。クラウドコンピューティングサービスについて研究しています。
+ここはどこかの大学の研究室。
+
+クラウドコンピューティングサービスについて研究しています。
 
 研究室に訪ねてきた男子大学生のあなたが主人公です。
 
@@ -37,9 +39,7 @@
 
 研究室の准教授。永遠の17歳。
 
-研究室メンバーを選んだ張本人。
-
-先生の機嫌を損ねると研究室から締め出される。
+研究室メンバーを選んだ張本人。先生の機嫌を損ねると研究室から締め出される。
 
 「あらようこそいらっしゃい♪　あなた専攻は何かしら？」
 
@@ -55,9 +55,7 @@ keystone先生が飼ってるワインレッドの猫。
 
 本作のメインヒロイン。3年生。
 
-ボケるCinderを突っ込むも今ひとつ。
-
-後ろでいつも先生に苦笑いをされている。
+ボケるCinderを突っ込むも今ひとつ。後ろでいつも先生に苦笑いをされている。
 
 面倒見がよく、後輩のGlanceちゃんをかわいがっている。
 
@@ -67,9 +65,7 @@ keystone先生が飼ってるワインレッドの猫。
 
 研究室に最近入り浸るようになった、怖いもの知らずの2年生。
 
-肩にかけたバッグにはOSカタログがびっしり。
-
-研究室に来るお客様に
+肩にかけたバッグにはOSカタログがびっしり。研究室に来るお客様に
 
 「ねえねえ見て見て！どれにする？？」
 
@@ -79,9 +75,7 @@ keystone先生が飼ってるワインレッドの猫。
 
 \subsubsection{Cinder(仮想マシンにボリュームを追加)}
 
-世間知らずの天然さん。3年生。
-
-お金持ちのお嬢様。お家は広い宮殿。
+世間知らずの天然さん。3年生。お金持ちのお嬢様。お家は広い宮殿。
 
 研究室の備品は全て彼女の提供品。
 
@@ -105,9 +99,38 @@ keystone先生が飼ってるワインレッドの猫。
 
 「こないだの彼？とっくに別れたわよ、3人と浮気してるの見えちゃったんだもん」
 
-\end{footnotesize}
 
 --- 見た目も性格もバラバラな5人だけど、やりたいことに手をあげたら、Openstackができました。
+
+\tableofcontents
+\end{tiny}
+
+\newpage
+
+\thispagestyle{empty}
+
+\vspace*{\stretch{1}}
+\begin{center}
+\begin{minipage}{0.3\hsize}
+\begin{tiny}
+　こういう脅迫みたいな場面は、子供の頃からしょっちゅう見てきました。そのくせ、じっさいに起こることはまったくその逆なんです。新しい技術が出てくるたびに、新しい「言語」を習得するための長い長い入門期間が必要になり、その入門期間は、私たちの頭がその新技術に先行する諸々の言語を使い慣れていればいるほど、長くなるのです。1903年から05年にかけて、映画という新しい言語が産声を上げ、是が非でも見過ごせなくなりました。小説を書いていれば映画の脚本を書く仕事にも簡単に移行できると思っている小説家がたくさんいますね。それは思い違いです。どちらも言葉を使って書かれていることに違いありませんが、じっさいには、まったく別の二つの言語だということがわかってないんです。
+
+　新しい技術は登場するたびに、過去になされたまったく別の発明に支配された制約や規則を無効にしようとします。得意満面、唯一無二の存在であろうとするんです。あたかもその新しい技術さえあれば、何の努力もしなくても、自動的に、生来そなわっていたかのように何かの能力が身につくとでもいうような。ひとりでに新しい能力が備わるかのような。すべての先行技術を一掃し、新しい技術を拒否する人々がいようものなら、ついでに彼らを時代遅れの文盲扱いしかねないような。
+
+　技術が手間を省いてくれるなんてことはまずありません。技術は手間を増やすだけです。ラジオ向けに芝居の台本を書くことになったら、これほど面倒なことはないんです。
+\begin{flushright}
+『もうすぐ絶滅するという紙の書物について』
+
+ウンベルト・エーコ
+
+ジャン＝クロード・カリエール
+
+工藤妙子　訳
+\end{flushright}
+\end{tiny}
+\end{minipage}
+\end{center}
+\vspace*{\stretch{1}}
 
 \chapter{はじめに}
 
@@ -276,7 +299,7 @@ Fedoraでは以下のパッケージをインストールしておくと後の�
 
 \begin{lstlisting}
 yum group install 'Development Tools'
-\end{lstlisting}  
+\end{lstlisting}
 
 あ、そもそもネットワークが繋がってないです？まぁネットワークアクセスが無くてもOpenStackの意義はどこかにある気もしますが、そうでないなら、さっさとLanケーブルなりWiFiなりにつなぎましょう。DHCPでもいいです。それでも動きます。
 
@@ -354,7 +377,7 @@ Enter a password now:
 \begin{lstlisting}
 ################################################################################
 ENTER A SERVICE_PASSWORD TO USE FOR THE SERVICE AUTHENTICATION.
-################j################################################################
+################################################################################
 This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
@@ -427,7 +450,7 @@ enable_service s-proxy s-object s-container s-account
 enable_service trove tr-api tr-tmgr tr-cond
 enable_service sahara
 enable_service zaqar-server
-disable_service heat h-eng h-api h-api-cfn h-api-cw 
+disable_service heat h-eng h-api h-api-cfn h-api-cw
 \end{lstlisting}
 
 tempestは結合テスト、ceilometerはリソース使用量の解析、s-で始まるのはオブジェクトストレージサービスのSwift、troveはデータベースサービス、saharaはHadoopクラスタをデプロイする機能、zaqarはキューイングサービス、heatはサーバーのオーケストレーションです。これらを全部起動するとどうなるかと言うと、ものっすごいメモリを消費します。8GBくらいは欲しいですね。
@@ -479,7 +502,7 @@ Fedoraにはいつものことですが、パッケージが壊れてます。Fe
  問題を回避するために --skip-broken を用いることができます。
  これらを試行できます: rpm -Va --nofiles --nodigest
 \end{lstlisting}
-   
+
 betaだし、こんなことで心折れていてはいけません。リラダンの『未来のイヴ』を読む方がよっぽど大変ですよ。あれは大変でした。まぁとりあえず即座に：
 
 \begin{lstlisting}
@@ -728,4 +751,3 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 \includegraphics[width=\paperwidth]{./img/bcover.pdf}
 
 \end{document}
-
