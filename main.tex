@@ -1,13 +1,19 @@
-\documentclass[9pt,b5paper,tombo]{jsbook}
+\documentclass[9pt,b5paper,tombo,openany]{jsbook}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{listings}
-\usepackage{color}
+\usepackage{inconsolata}
+\usepackage{floatflt}
 
-\lstset{basicstyle={\footnotesize\ttfamily}}
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+\renewcommand{\familydefault}{\sfdefault}
 
 \setlength{\textwidth}{\fullwidth}
 \setlength{\evensidemargin}{\oddsidemargin}
+
+\lstset{basicstyle={\small\ttfamily}}
+\lstset{frame=single}
+\lstset{breaklines=true}
 
 \begin{document}
 
@@ -16,18 +22,14 @@
 \vspace*{-1truein}
 \vspace*{-\topmargin}
 \vspace*{-\headheight}
-\vspace*{-\headsep}
+\vspace*{-0.65\headsep}
 \vspace*{-\topskip}
-\noindent\hspace*{-1in}\hspace*{-\oddsidemargin}
-\includegraphics[width=\paperwidth]{./img/cover.pdf}
+\noindent\hspace*{-1in}\hspace*{-0.5\oddsidemargin}
+\includegraphics[width=1.02\paperwidth]{./img/cover.pdf}
 
 \newpage
 
 \thispagestyle{empty}
-%\setlength{\textwidth}{\fullwidth}
-%\setlength{\evensidemargin}{\oddsidemargin}
-
-\begin{tiny}
 
 ここはどこかの大学の研究室。
 
@@ -36,6 +38,10 @@
 研究室に訪ねてきた男子大学生のあなたが主人公です。
 
 \subsubsection{Keysotne（操作ユーザーの認証・認可を担当）}
+
+\begin{floatingfigure}[r]{5cm}
+  \includegraphics[width=5cm]{./img/char1.pdf}
+\end{floatingfigure}
 
 研究室の准教授。永遠の17歳。
 
@@ -60,6 +66,10 @@ keystone先生が飼ってるワインレッドの猫。
 面倒見がよく、後輩のGlanceちゃんをかわいがっている。
 
 「ちょっとGlance！カタログより先にお茶出しでしょ！もう~」
+
+\begin{floatingfigure}[r]{5cm}
+  \includegraphics[width=5cm]{./img/char2.pdf}
+\end{floatingfigure}
 
 \subsubsection{Glance（仮想マシンで使えるOSを管理）}
 
@@ -102,9 +112,6 @@ keystone先生が飼ってるワインレッドの猫。
 
 --- 見た目も性格もバラバラな5人だけど、やりたいことに手をあげたら、Openstackができました。
 
-\tableofcontents
-\end{tiny}
-
 \newpage
 
 \thispagestyle{empty}
@@ -131,6 +138,8 @@ keystone先生が飼ってるワインレッドの猫。
 \end{minipage}
 \end{center}
 \vspace*{\stretch{1}}
+
+\tableofcontents
 
 \chapter{はじめに}
 
@@ -736,9 +745,6 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 イラスト担当のくろろろろです。人様の原稿に絵を付けたのはこれが初めてなので、とても緊張しました。表紙を見てOpenStackに少しでも興味を持って貰えると嬉しく思います。
 
 \newpage
-
-%\setlength{\textwidth}{\fullwidth}
-%\setlength{\evensidemargin}{\oddsidemargin}
 
 \enlargethispage{\paperwidth}
 \thispagestyle{empty}
