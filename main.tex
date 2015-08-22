@@ -4,6 +4,7 @@
 \usepackage{listings}
 \usepackage{inconsolata}
 \usepackage{floatflt}
+\usepackage{url}
 
 \renewcommand{\kanjifamilydefault}{\gtdefault}
 \renewcommand{\familydefault}{\sfdefault}
@@ -22,7 +23,7 @@
 \vspace*{-1truein}
 \vspace*{-\topmargin}
 \vspace*{-\headheight}
-\vspace*{-0.65\headsep}
+\vspace*{-1.05\headsep}
 \vspace*{-\topskip}
 \noindent\hspace*{-1in}\hspace*{-0.5\oddsidemargin}
 \includegraphics[width=1.02\paperwidth]{./img/cover.pdf}
@@ -139,7 +140,9 @@ keystone先生が飼ってるワインレッドの猫。
 \end{center}
 \vspace*{\stretch{1}}
 
+\thispagestyle{empty}
 \tableofcontents
+\thispagestyle{empty}
 
 \chapter{はじめに}
 
@@ -247,13 +250,15 @@ Keystoneはユーザ認証とロールベースのアクセスコントロール
 
 "openstack"で探してみました？前章で出てきた名前のパッケージが見えますね。どれをインストールしました？いや、その前にAMQPインストールしました？ついでに、そもそもなんですが、あなたのカーネルってKVMモジュール効いてます？って実は無くても動くんですけどね。あ、libxml-develが必要かもしれません。どこにも書いてないけど。まぁまずはドキュメントを読んでみましょう：
 
-http://docs.openstack.org/
+\begin{itemize}
+  \item \url{http://docs.openstack.org/}
+\end{itemize}
 
 の、どれだよ、って？しょうがないなぁFedoraとUbuntuのを教えてあげよう：
 
 \begin{itemize}
-  \item http://docs.openstack.org/juno/install-guide/install/yum/content/
-  \item http://docs.openstack.org/juno/install-guide/install/apt/content/
+  \item \url{http://docs.openstack.org/juno/install-guide/install/yum/content/}
+  \item \url{http://docs.openstack.org/juno/install-guide/install/apt/content/}
 \end{itemize}
 
 詳細なドキュメントですね。これをすべてやらないとOpenStackは動きません。読んでない人のために、ここにまとめを書いておきましょう。三行で言うと：
@@ -645,7 +650,7 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 
 \begin{figure}[htbp]
   \begin{center}
-    \includegraphics[width=10cm]{./img/boot.pdf}
+    \includegraphics[width=\textwidth]{./img/boot.pdf}
   \end{center}
 \end{figure}
 
@@ -696,11 +701,15 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
   \end{center}
 \end{table}
 
+\newpage
+
+\newpage
+
 \chapter{あとがき}
 
-\section{こじろー}
+\section*{こじろー}
 
-\subsection{ミームの死骸を待ちながら}
+\subsection*{ミームの死骸を待ちながら}
 
 \begin{quote}
 「組織も人も、特殊化の果てにあるのはゆるやかな死、それだけよ」
@@ -714,9 +723,9 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 
 15年前にGNU/Linuxが成し遂げた夢を、クラウドの分野で再度叶えるのである。この時代にそれを成すためには、ミーム学的アプローチにより、互いに依存しあうミーム複合体(memeplex)を構築することが必要である。偶然か必然か、そのアプローチを取ったのが、OpenStackである。GNU/Linux上に構築されたクラウドシステム(ミーム複合体)とそれと連携するドライバモデル(ミーム)は、まさにミームが寄り集まってミーム複合体を形成する様に酷似しているのである。オープンソースであることはもちろんのこと、単一企業による開発コミュニティの独占が成されていないことにより、共有知の創出を圧倒的速度で促すことに成功したのである。OpenStackによりクラウドのあり方は変わるであろう。が、それと同時に僕は、ミームの死骸に恋い焦がれているのである。
 
-\section{まっきー}
+\section*{まっきー}
 
-\subsection{OpenStackは革命戦士の夢を見るか、あるいはすべてがエスになる世界について}
+\subsection*{OpenStackは革命戦士の夢を見るか、あるいはすべてがエスになる世界について}
 
 \begin{quote}
 否定性は、止揚の不可欠の一契機である。怒り、等々の否定性の感情は、人が今ある存在を実践的にのりこえ、変換してゆくときに不可欠の前提である。しかしこの怒り、等々の感情は、それがあまりにも直接的で、なまなましくわれわれをおそうとき、われわれの超越への意志を緊縛し、あらがいがたい強力をもって、われわれを内在性のうちにひき戻してしまう。情況にたいしていいったん距離をおき、これを明晰に相対的に把握することを許さない。怒りはわれわれを、情況のたんなる否定性、同位対立者としての境位に呪縛してしまう。（中略）人間的な実践の弁証法は解体し否定性の実存だけがむきだしに残る。そして現代の支配体制の柔構造は、このような無援の実存を愚弄し、吸収するための幾重もの装置をもっている。
@@ -740,20 +749,73 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 
 得てして、良き友は今でもただの良き友のままであり、僕は革命戦士の夢を見る。怒りがある分には、まだOpenStackもまた、革命戦士の夢をみてもバチはあたらない気がする。
 
-\section{くろろろろ}
+\section*{くろろろろ}
 
 イラスト担当のくろろろろです。人様の原稿に絵を付けたのはこれが初めてなので、とても緊張しました。表紙を見てOpenStackに少しでも興味を持って貰えると嬉しく思います。
+
+\begin{flushleft}
+\begin{minipage}{0.5\hsize}
+\begin{scriptsize}
+
+\subsection*{スタッフプロフィール}
+
+\subsubsection*{本編 こじろーさん}
+
+社会人5 年目の29 才。焦りを感じつつも、メンヘラを誘引する特異体質のため嫁探しは難航を極めている。夜な夜なラブライブのライブBD を泣きながら見ているせいもあると思う。推しはエリチカ（というかむしろナンジョルノ）
+
+\subsubsection*{本編 まっきーさん}
+
+編集長。年齢不詳の社会人3 年目。ツンデレ。大学時代は偏った思想な人と日本一怪しい寮で6 年間を過ごす。コーヒーとお茶のカフェイン漬けな毎日。休日は一歩も外に出たくないしだれとも喋りたくないので社会不適合ギリギリ。自称オタクじゃないけどSHIROBAKO ならみゃーもりになりたい。こじろうさん「この本作ったおかげでコミュ力上がったんじゃね？」
+
+\subsubsection*{絵師様 くろろろろさん}
+
+みさきさん以外をだれも知らないのにイラスト作画を引き受けてくれた天使。ともだちのともだちのともだちはともだち。瀬戸内産のほのぼの絵描きさん。普段癒し系を装うも実はばっさりツッコミ担当。最近はハイキュー及川が尊い。
+
+\subsubsection*{キャラ原案 あおこさん}
+
+（はーと）ラグラージ（はーと）サーナイト（はーと）なべしょ（はーと）しげおか（はーと）年末年始の予定はコミケとルビサファとコンサート。なっぴさん「わたしの愛人も兼ねてますよねｸﾞﾍﾍ」
+
+\subsubsection*{Special Thanks みさきさん}
+
+狩りに出たりイギリスを眺めたりしてると休日が終わる。なんでもおいしくいただける系女子。こじろうさん「ナンジョルノに似てますねﾌﾋﾋ」
+
+\subsubsection*{雑用 なっぴさん}
+
+こじろうさんの後輩。このページとキャラプロフィールとキャラ原案と売り子と編集長を急かす担当。セガの作る鏡音レンくんの絶対領域をｐｒｐｒするために可及的速やかに0 と1 に還元されたい。「進捗どうですか、って一回リアルに言ってみたかった。反省はしていない」
+
+\end{scriptsize}
+\end{minipage}
+\end{flushleft}
+
+\newpage
+
+\vspace*{\stretch{1}}
+\begin{flushright}
+\begin{minipage}{0.5\hsize}
+\begin{small}
+\begin{description}
+  \item{制作：} なっぴ
+  \item{著者：} こじろう・まっきー
+  \item{挿絵：} くろろろろ・あおこ
+  \item{初版発行：} 2014年12月30日
+  \item{第2版発行：} 2015年12月31日
+  \item{印刷：} POPLS (\url{http://www.inv.co.jp/~popls/})
+\end{description}
+\end{small}
+\end{minipage}
+\end{flushright}
+\vspace*{\stretch{1}}
 
 \newpage
 
 \enlargethispage{\paperwidth}
 \thispagestyle{empty}
-\vspace*{-1truein}
+\vspace*{-1.05truein}
 \vspace*{-\topmargin}
 \vspace*{-\headheight}
 \vspace*{-\headsep}
 \vspace*{-\topskip}
-\noindent\hspace*{-1in}\hspace*{-\oddsidemargin}
-\includegraphics[width=\paperwidth]{./img/bcover.pdf}
+\noindent\hspace*{-1.11in}\hspace*{-\oddsidemargin}
+\includegraphics[width=1.025\paperwidth]{./img/bcover.pdf}
 
 \end{document}
