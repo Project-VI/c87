@@ -1,20 +1,80 @@
-\documentclass[9pt,b5paper,tombo,openany]{jsbook}
+\documentclass[8pt,b5paper,tombo,openany]{jsbook}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{listings}
 \usepackage{inconsolata}
-\usepackage{floatflt}
 \usepackage{url}
-
-\renewcommand{\kanjifamilydefault}{\gtdefault}
-\renewcommand{\familydefault}{\sfdefault}
-
-\setlength{\textwidth}{\fullwidth}
-\setlength{\evensidemargin}{\oddsidemargin}
+\usepackage{floatflt}
+\usepackage{wrapfig}
 
 \lstset{basicstyle={\small\ttfamily}}
 \lstset{frame=single}
 \lstset{breaklines=true}
+
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+\renewcommand{\familydefault}{\sfdefault}
+
+%%%% toc
+% toc format
+\usepackage{tocloft}
+% toc
+\usepackage{minitoc}
+\usepackage{titletoc}
+\usepackage[]{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{shadows.blur}
+
+\cftsetindents{chapter}{0.05in}{0.5in}
+\cftsetindents{section}{0.1in}{0.3in}
+
+\definecolor{yourcolor}{HTML}{bbbbbb}
+
+%\colorlet{chpnumbercolor}{black}
+%\makeatletter
+%\let\oldl@chapter\l@chapter
+%\def\l@chapter#1#2{\oldl@chapter{#1}{\textcolor{chpnumbercolor}{#2}}}
+
+%\let\old@dottedcontentsline\@dottedtocline
+%\def\@dottedtocline#1#2#3#4#5{%
+%  \old@dottedcontentsline{#1}{#2}{#3}{#4}{{\textcolor{chpnumbercolor}{#5}}}}
+%\makeatother
+
+\titleformat{\chapter}[display]
+  {\normalfont\color{black}}
+  %{\filleft\Huge\sffamily\bfseries\chaptertitlename\hspace*{2mm}%
+  {\filleft\Huge\sffamily\bfseries\hspace*{2mm}
+    \begin{tikzpicture}[baseline={([yshift=-.6ex]current bounding box.center)}]
+      \node[fill=yourcolor,circle,text=black] {\thechapter};
+    \end{tikzpicture}}
+  {1ex}
+  %{\titlerule[1.5pt]\vspace*{5ex}\huge\sffamily\itshape}
+  {\titlerule[1.5pt]\vspace*{5ex}\huge\sffamily}
+  []
+
+\titleformat{name=\chapter,numberless}[display]
+  {\normalfont\color{black}}
+  {}
+  {1ex}
+  {\vspace*{5ex}\huge\sffamily\itshape}
+  []
+
+%command to print the acutal minitoc
+\newcommand{\printmyminitoc}{%
+    \noindent
+    %\hspace{-2cm}
+    \colorlet{chpnumbercolor}{black}
+    \begin{tikzpicture}
+      \node[rounded corners,align=left,fill=yourcolor, blur shadow={shadow blur steps=5}, inner sep=5mm]{%
+      %\node[rounded corners,align=left, blur shadow={shadow blur steps=5}, inner sep=5mm]{%
+        \color{black}%
+          \begin{minipage}{0.7\textwidth}%minipage trick
+            \printcontents[sections]{}{1}{}
+          \end{minipage}};
+    \end{tikzpicture}}
+%%%%
+
+\setlength{\textwidth}{\fullwidth}
+\setlength{\evensidemargin}{\oddsidemargin}
 
 \begin{document}
 
@@ -40,8 +100,8 @@
 
 \subsubsection{Keysotne（操作ユーザーの認証・認可を担当）}
 
-\begin{floatingfigure}[r]{5cm}
-  \includegraphics[width=5cm]{./img/char1.pdf}
+\begin{floatingfigure}[r]{3cm}
+  \includegraphics[width=3cm]{./img/char1.pdf}
 \end{floatingfigure}
 
 研究室の准教授。永遠の17歳。
@@ -68,8 +128,8 @@ keystone先生が飼ってるワインレッドの猫。
 
 「ちょっとGlance！カタログより先にお茶出しでしょ！もう~」
 
-\begin{floatingfigure}[r]{5cm}
-  \includegraphics[width=5cm]{./img/char2.pdf}
+\begin{floatingfigure}[r]{3cm}
+  \includegraphics[width=3cm]{./img/char2.pdf}
 \end{floatingfigure}
 
 \subsubsection{Glance（仮想マシンで使えるOSを管理）}
@@ -140,15 +200,17 @@ keystone先生が飼ってるワインレッドの猫。
 \end{center}
 \vspace*{\stretch{1}}
 
+\newpage
+
 \thispagestyle{empty}
+
 \tableofcontents
-\thispagestyle{empty}
 
 \chapter{はじめに}
 
 \setcounter{page}{1}
 
-OpenStackという単語を聞いたことがある人が、この本を手に取って頂いたのだと思います。あるいは表紙がかわいいから、という理由かもしれません。
+OpenStack\footnote{英辞郎によればStackとは「積み重なったもの」という意味があるようだが、コンピューターサイエンスではFILOである。Big Tentの名の下にプロジェクトの分割や新規プロジェクトの容易な出現が見て取れる昨今のOpenStackにおいてFILOとはなんとも皮肉である。}という単語を聞いたことがある人が、この本を手に取って頂いたのだと思います。あるいは表紙がかわいいから\footnote{表紙に関してはまず登場人物をコアコンポーネントの5人ということを決め、あとはよしなに個性を決定していく形になった。要するに擬人化のたぐいである。ところでOpenStack擬人化がなかなか行われないのはなぜか。結局難しくて誰もわかんねーんじゃねぇのか、ということはさておき。分かることしか分かろうとしないのが、オタクがオタクでしかあり得ないことの表れでもある。誰だよオタクが日本の力とか言ってた奴は出てこい。}、という理由かもしれません。
 
 11月某日にみさきさんという女の子に出会いました。その子にコミケ出展の話を偶然したことをきっかけに、今回かわいい表紙や挿絵を書いてくれたくろろろろさんという絵師の女の子にも出会うことが出来ました。くろろろろさんの絵はラフの段階でとても素晴らしい出来でした。この2人がいなければ、このような形で本書は完成していなかったでしょう。「縁に気づいて、縁を生かす」、という言葉があります。本書はまさにその言葉通りの行動の結果だと思います。まずは、みさきさんとくろろろろさんに感謝の意を述べたいと思います。心から「ありがとう」。
 
@@ -158,11 +220,15 @@ OpenStackという単語を聞いたことがある人が、この本を手に�
 
 ググれば分かることはそちらに任せ、それとは少し違う、かゆいところに手が届く内容にしたいと思います。OpenStackに関する本はまだまだ少ないと言えます。ネット上の情報も十分とは言えないでしょう。それにしては、簡単に試すには酷なソフトウェア群です。これはつまり、これでお金を動かすことができるということです。それにも関わらす、この本には複数の方の協力を得ました。給料は出ません。有り難い話です。この本を真に受けてしまうのはおすすめしませんが、ネットを調べてもなかなか載っていないだろう情報が、多少はあると思います。
 
-偶然かどうかわかりませんが、この本を編集している時に、さきほどの引用にある本を読んでいました。OpenStackは、長らく職人の世界であり、良くも悪くも雇用を守ってきたインフラの聖域に少し入り込んだ、新参者です。だからこそ流行し、だからこそ流行させられようとし、そして嫌われ始めています。OpenStackのAlternativeが発生するのは時間の問題でしょう。ただしそれは、貴方が手に取った「本」に対しても、かつて同じことが起こっていたと思います。いつだって最後には、些細なことです。
+偶然かどうかわかりませんが、この本を編集している時に、さきほどの引用にある本を読んでいました。OpenStackは、長らく職人の世界であり、良くも悪くも雇用を守ってきたインフラの聖域に少し入り込んだ、新参者です。だからこそ流行し、だからこそ流行させられようとし、そして嫌われ始めています。OpenStackのAlternativeが発生するのは時間の問題でしょう\footnote{これは結局まだ無い。Big Tent思想がそれを防いだ、ということは言えるかもしれない。代わりにCloudStackが消えそうである。}。ただしそれは、貴方が手に取った「本」に対しても、かつて同じことが起こっていたと思います。いつだって最後には、些細なことです。
 
 これはかつてクラウドと呼ばれたインフラに関する事柄、あるいはたった一つの冴えたやりかたの存在を考えるシリーズの、第一巻となる予定です。TerraformやKVMと、書かれるべきものはたくさんありますが、執筆者のみでは不可能であり、まず、他のメンバーにお伺いをたてなければなりません。
 
 \chapter{OpenStackことはじめ}
+
+\startcontents[sections]
+
+\printmyminitoc
 
 \section{OpenStack以前 ~クラウドのベンダーロックイン問題}
 
@@ -242,7 +308,13 @@ NeutronはOpenStackに対してネットワークに紐付いたサービスを�
 
 Keystoneはユーザ認証とロールベースのアクセスコントロールをOpenStackに提供するためのコンポーネントです。KeystoneはLDAPと連携することでユーザコントロールやポリシーの設定が可能になります。また、伝統的なID/Passwordによるログインに加えてトークンベースのログインも可能です。
 
-\section{OpenStackを動かしてみる}
+\stopcontents[sections]
+
+\chapter{OpenStackを動かしてみる}
+
+\startcontents[sections]
+
+\printmyminitoc
 
 というわけで、OpenStackをセットアップしてみましょう。念入りに準備をして、その準備から外れたことはしない人いますけど、それが責任感とでも思っているんですかね。何でもやってみなくちゃ始まりません。なんとdebでもrpmでもパッケージが提供されています。ディストリビューションのリポジトリを探してみましょう。そのパッケージをインストールすればよいのです。できましたか？設定ファイルなどを書き直す必要はありますが……まぁパッケージだしデフォルトでそれなりに動くようになってはいるでしょう。じゃあ起動してみましょう。
 
@@ -547,17 +619,23 @@ Fedora 21 ServerにはCockpitというサーバーリソース管理サービス
 
 CPU、メモリ、ディスク、ネットワーク、起動中のサービスなどの基本情報に加えて、ユーザー情報、Dockerサービス、Dockerコンテナ、journalctlなんかもWebから見ることができます。
 
-\section{ブート時のインスタンスの設定}
+\stopcontents[sections]
 
-\subsection{config\_drive}
+\chapter{ブート時のインスタンスの設定}
+
+\startcontents[sections]
+
+\printmyminitoc
+
+\section{config\_drive}
 
 インスタンスをブートする際に、そのインタンスに対してメタデータを書き込んだ特別な設定用ドライブをアタッチしてOpenStackの設定を行うことができます。その際、アタッチする設定用仮想ドライブをコンフィグドライブと呼びます。インスタンスはこのドライブをマウントしてファイルを読み情報を取得することが可能です。例えば、インスタンスへIPアドレスを割り当てる際にDHCPを使用しない場合、ネットワーク設定が書き込まれているメタデータファイルをコンフィグドライブとしてマウントして固定IPアドレスの設定をすることができます。コンフィグドライブは、インスタンスにネットワーク設定を施す前にマウントしてメタデータへのアクセスが可能になるが故、IPアドレスの設定が可能になるのです。
 
-\subsection{cloud-init}
+\section{cloud-init}
 
 コンフィグドライブから情報を取得し、ブート時にインスタンスの設定を行う際、cloud-initとの連携が必要になります。cloud-initはOpenStack固有のテクノロジーではありません。マシンイメージをマルチクラウド上に展開することができるようにするため、複数のクラウドサービスをサポートできるように設計されています。
 
-\subsection{インストール}
+\section{インストール}
 
 1. RHEL6/CentOS6
 
@@ -572,7 +650,7 @@ yum install cloud-init
 apt-get install cloud-init
 \end{lstlisting}
 
-\subsection{実用例}
+\section{実用例}
 
 cloud-initを利用することでインスタンスの起動時に任意スクリプトを実行することができます。
 
@@ -588,19 +666,19 @@ cloud_final_modules:
 
 追加した内容は下記となります。
 
-\subsubsection{scripts-per-once}
+\subsection{scripts-per-once}
 
 "/var/lib/cloud/scripts/per-once/"以下のスクリプトを実行
 
 * 初回起動時に実行 (OpenStack環境ではユーザが独自イメージを作成する際に実行される)
 
-\subsubsection{scripts-per-boot}
+\subsection{scripts-per-boot}
 
 "/var/lib/cloud/scripts/per-boot/"以下のスクリプトを実行
 
 * リブート時に実行
 
-\subsubsection{scripts-per-instance}
+\subsection{scripts-per-instance}
 
 "/var/lib/cloud/scripts/per-instance/"以下のスクリプトを実行
 
@@ -645,6 +723,10 @@ cloud_final_modules:
 処理の流れとしては、config\_driveをマウントし、ipconfigコマンド、routeコマンドを使いIP設定を行い、最後にconfig\_driveをアンマウントするという流れです。当然、次回リブートすると設定は消えてしまうので、ブート後ネットワークの設定ファイルを修正する必要がありますが、このスクリプトにより初回ブート時に自動でsshできるようになります。Pythonスクリプトの中身は以下で紹介していますので、ご参考下さい。
 
 https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
+
+\stopcontents[sections]
+
+\chapter{ブートシーケンス}
 
 最後に、第５章では、より詳細なOpenStackでインスタンスを生成した際の内部で起こっているブートシーケンスについて順を追って説明します。なお、ここではAPIへの通信はHorizon、もしくはnovaclientによるCLI操作を想定しています。
 
@@ -753,6 +835,8 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 
 イラスト担当のくろろろろです。人様の原稿に絵を付けたのはこれが初めてなので、とても緊張しました。表紙を見てOpenStackに少しでも興味を持って貰えると嬉しく思います。
 
+\newpage
+
 \begin{flushleft}
 \begin{minipage}{0.5\hsize}
 \begin{scriptsize}
@@ -786,8 +870,6 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 \end{scriptsize}
 \end{minipage}
 \end{flushleft}
-
-\newpage
 
 \vspace*{\stretch{1}}
 \begin{flushright}
