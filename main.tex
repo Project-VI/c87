@@ -227,7 +227,7 @@ OpenStack\marginpar{\scriptsize 英辞郎によればStackとは「積み重な�
 
 ググれば分かることはそちらに任せ、それとは少し違う、かゆいところに手が届く内容にしたいと思います。OpenStackに関する本はまだまだ少ないと言えます。ネット上の情報も十分とは言えないでしょう。それにしては、簡単に試すには酷なソフトウェア群です。これはつまり、これでお金を動かすことができるということです。それにも関わらす、この本には複数の方の協力を得ました。給料は出ません。有り難い話です。この本を真に受けてしまうのはおすすめしませんが、ネットを調べてもなかなか載っていないだろう情報が、多少はあると思います。
 
-偶然かどうかわかりませんが、この本を編集している時に、さきほどの引用にある本を読んでいました。OpenStackは、長らく職人の世界であり、良くも悪くも雇用を守ってきたインフラの聖域に少し入り込んだ、新参者です。だからこそ流行し、だからこそ流行させられようとし、そして嫌われ始めています。OpenStackのAlternativeが発生するのは時間の問題でしょう\footnote{これは結局まだ無い。Big Tent思想がそれを防いだ、ということは言えるかもしれない。代わりにCloudStackが消えそうである。}。ただしそれは、貴方が手に取った「本」に対しても、かつて同じことが起こっていたと思います。いつだって最後には、些細なことです。
+偶然かどうかわかりませんが、この本を編集している時に、さきほどの引用にある本を読んでいました。OpenStackは、長らく職人の世界であり、良くも悪くも雇用を守ってきたインフラの聖域に少し入り込んだ、新参者です。だからこそ流行し、だからこそ流行させられようとし、そして嫌われ始めています。OpenStackのAlternativeが発生するのは時間の問題でしょう\marginpar{\scriptsize これは結局まだ無い。Big Tent思想がそれを防いだ、ということは言えるかもしれない。代わりにCloudStackが消えそうである。}。ただしそれは、貴方が手に取った「本」に対しても、かつて同じことが起こっていたと思います。いつだって最後には、些細なことです。
 
 これはかつてクラウドと呼ばれたインフラに関する事柄、あるいはたった一つの冴えたやりかたの存在を考えるシリーズの、第一巻となる予定です。TerraformやKVMと、書かれるべきものはたくさんありますが、執筆者のみでは不可能であり、まず、他のメンバーにお伺いをたてなければなりません。
 
@@ -331,7 +331,7 @@ Keystoneはユーザ認証とロールベースのアクセスコントロール
 
 \startcontents[sections]
 
-\printmyminitoc
+%\printmyminitoc
 
 というわけで、これからOpenStackをセットアップしていきましょう。\footnote{「念入りに準備をして、その準備から外れたことはしない人いますけど、それが責任感とでも思っているんですかね。」と言っていたがfootnote送りにしよう。}何でもやってみなくちゃ始まりません。なんとdebでもrpmでもパッケージが提供されています。ディストリビューションのリポジトリを探してみましょう。そのパッケージをインストールすればよいのです。設定ファイルなどを書き直す必要はありますが……まぁパッケージになっているんだしデフォルトでそれなりに動くようになってはいるでしょう。じゃあ起動してみましょう。
 
@@ -438,9 +438,7 @@ enable_service neutron q-svc q-agt q-dhcp q-l3 q-meta
 おっと延々とメッセージが出はじめましたね。それぞれが何をやっているかはあとで説明するとして、ちょっと待ってみましょう。プロンプトが出て、何か聞かれませんか？まずはこれでしょう：
 
 \begin{lstlisting}
-################################################################################
 ENTER A PASSWORD TO USE FOR THE DATABASE.
-################################################################################
 This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
@@ -450,9 +448,7 @@ Enter a password now:
 OpenStackは必要なデータを保存しておくシステムとして、データベースシステムを必要とします。MySQLでもsqliteでもpostgresqlでも（たぶん）いいのですが、devstackはMySQLを使おうとします。つまり、勝手にインストールします。そして、勝手に起動します。（自動起動はしない、と思う。）ます聞かれたのは、このデータベースのrootパスワードです。次はこれ：
 
 \begin{lstlisting}
-################################################################################
 ENTER A PASSWORD TO USE FOR RABBIT.
-################################################################################
 This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
@@ -468,9 +464,7 @@ OpenStackはさまざまなコンポーネントやプロセス、あるいは�
 素晴らしい組織体系ですね。あなたの会社はどうですか？まぁどっちにしても、そのような予算の組み方に依存して生活を営んでいる人で構成された国ですので、それを守るのが正義なんじゃないですかね。まぁいいや。次はこれです：
 
 \begin{lstlisting}
-################################################################################
 ENTER A SERVICE_TOKEN TO USE FOR THE SERVICE ADMIN TOKEN.
-################################################################################
 This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
@@ -480,9 +474,7 @@ Enter a password now:
 これから以下は、デフォルトのパスワード設定です。ADMIN TOKENは管理者用の操作を行うための特別パスワードみたいなものです。次もパスワードを聞いてきています：
 
 \begin{lstlisting}
-################################################################################
 ENTER A SERVICE_PASSWORD TO USE FOR THE SERVICE AUTHENTICATION.
-################################################################################
 This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
@@ -492,9 +484,7 @@ Enter a password now:
 各コンポーネントはOpenStackシステムを担うサブシステムですが、それでもその連携にはOpenStackのエンドユーザーと同様の認証と認可が必要になります。つまり、各コンポーネントもユーザー名と正しいパスワードを持っている必要があります。しかし、さすがに普通のユーザーではなく、ロールが違います。各コンポーネントはserviceという特殊なロールを割り当てられており、Keystoneによる認証と認可を受けます。というわけで、サービスロールを持つOpenStackコンポーネントユーザーのパスワードをここで決めます。で、最後は：
 
 \begin{lstlisting}
-################################################################################
 ENTER A PASSWORD TO USE FOR HORIZON AND KEYSTONE (20 CHARS OR LESS).
-################################################################################
 This value will be written to your localrc file so you don't have to enter it
 again.  Use only alphanumeric characters.
 If you leave this blank, a random default value will be used.
@@ -644,7 +634,7 @@ CPU、メモリ、ディスク、ネットワーク、起動中のサービス�
 
 \startcontents[sections]
 
-\printmyminitoc
+%\printmyminitoc
 
 \section{config\_drive}
 
