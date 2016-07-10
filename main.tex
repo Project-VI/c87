@@ -1,12 +1,13 @@
-\documentclass[9pt,b5paper,tombo,openany]{jsbook}
-
+\documentclass[9pt,b5paper,tombo,openany,dvipdfmx]{jsbook}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{listings}
 \usepackage{inconsolata}
 \usepackage{url}
 \usepackage{floatflt}
-\usepackage{wrapfig}
+\usepackage{titletoc}
+\usepackage{titlesec}
+\usepackage{tikz}
 
 \lstset{basicstyle={\small\ttfamily}}
 \lstset{frame=single}
@@ -14,68 +15,22 @@
 
 \renewcommand{\kanjifamilydefault}{\gtdefault}
 \renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\baselinestretch}{1.2}
 
-%%%% toc
-% toc format
-\usepackage{tocloft}
-% toc
-\usepackage{minitoc}
-\usepackage{titletoc}
-\usepackage[]{titlesec}
-\usepackage{tikz}
-\usetikzlibrary{shadows.blur}
-
-\cftsetindents{chapter}{0.05in}{0.5in}
-\cftsetindents{section}{0.1in}{0.3in}
-
-\definecolor{yourcolor}{HTML}{bbbbbb}
-
-%\colorlet{chpnumbercolor}{black}
-%\makeatletter
-%\let\oldl@chapter\l@chapter
-%\def\l@chapter#1#2{\oldl@chapter{#1}{\textcolor{chpnumbercolor}{#2}}}
-
-%\let\old@dottedcontentsline\@dottedtocline
-%\def\@dottedtocline#1#2#3#4#5{%
-%  \old@dottedcontentsline{#1}{#2}{#3}{#4}{{\textcolor{chpnumbercolor}{#5}}}}
-%\makeatother
+%\setlength{\textwidth}{\fullwidth}
+%\setlength{\evensidemargin}{\oddsidemargin}
 
 \titleformat{\chapter}[display]
   {\normalfont\color{black}}
   %{\filleft\Huge\sffamily\bfseries\chaptertitlename\hspace*{2mm}%
   {\filleft\Huge\sffamily\bfseries\hspace*{2mm}
     \begin{tikzpicture}[baseline={([yshift=-.6ex]current bounding box.center)}]
-      \node[fill=yourcolor,circle,text=black] {\thechapter};
+      \node[fill=gray,circle,text=black] {\thechapter};
     \end{tikzpicture}}
   {1ex}
   %{\titlerule[1.5pt]\vspace*{5ex}\huge\sffamily\itshape}
   {\titlerule[1.5pt]\vspace*{5ex}\huge\sffamily}
   []
-
-\titleformat{name=\chapter,numberless}[display]
-  {\normalfont\color{black}}
-  {}
-  {1ex}
-  {\vspace*{5ex}\huge\sffamily\itshape}
-  []
-
-%command to print the acutal minitoc
-\newcommand{\printmyminitoc}{%
-    \noindent
-    %\hspace{-2cm}
-    \colorlet{chpnumbercolor}{black}
-    \begin{tikzpicture}
-      \node[rounded corners,align=left,fill=yourcolor, blur shadow={shadow blur steps=5}, inner sep=5mm]{%
-      %\node[rounded corners,align=left, blur shadow={shadow blur steps=5}, inner sep=5mm]{%
-        \color{black}%
-          \begin{minipage}{0.7\textwidth}%minipage trick
-            \printcontents[sections]{}{1}{}
-          \end{minipage}};
-    \end{tikzpicture}}
-%%%%
-
-%\setlength{\textwidth}{\fullwidth}
-%\setlength{\evensidemargin}{\oddsidemargin}
 
 \begin{document}
 
@@ -84,17 +39,20 @@
 \vspace*{-1truein}
 \vspace*{-\topmargin}
 \vspace*{-\headheight}
-\vspace*{-1.05\headsep}
+\vspace*{-\headsep}
 \vspace*{-\topskip}
-\noindent\hspace*{-1in}\hspace*{-0.5\oddsidemargin}
+\noindent
+\hspace*{-1truein}
+\hspace*{-\oddsidemargin}
 \includegraphics[width=1.02\paperwidth]{./img/cover.pdf}
 
 \newpage
 
+\setcounter{page}{1}
+
 \thispagestyle{empty}
 
-\hspace*{-1.7in}
-\begin{minipage}{\fullwidth}
+\begin{minipage}{1.1\textwidth}
 	\small
 	ここはどこかの大学の研究室。
 
@@ -179,14 +137,13 @@
 \end{minipage}
 
 \newpage
-
+\setcounter{page}{1}
 \thispagestyle{empty}
-
 \vspace*{\stretch{1}}
-\hspace*{1.6in}
+\hspace*{1.7in}
 \begin{minipage}{0.5\hsize}
 	\begin{tiny}
-		　こういう脅迫みたいな場面は、子供の頃からしょっちゅう見てきました。そのくせ、じっさいに起こることはまったくその逆なんです。新しい技術が出てくるたびに、新しい「言語」を習得するための長い長い入門期間が必要になり、その入門期間は、私たちの頭がその新技術に先行する諸々の言語を使い慣れていればいるほど、長くなるのです。1903年から05年にかけて、映画という新しい言語が産声を上げ、是が非でも見過ごせなくなりました。小説を書いていれば映画の脚本を書く仕事にも簡単に移行できると思っている小説家がたくさんいますね。それは思い違いです。どちらも言葉を使って書かれていることに違いありませんが、じっさいには、まったく別の二つの言語だということがわかってないんです。
+		　こういう脅迫みたいな場面は、子供の頃からしょっちゅう見てきました。そのくせ、じっさいに起こることはまったくその逆なんです。新しい技術が出てくるたびに、新しい「言語を習得するための長い長い入門期間が必要になり、その入門期間は、私たちの頭がその新技術に先行する諸々の言語を使い慣れていればいるほど、長くなるのです。1903年から05年にかけて、映画という新しい言語が産声を上げ、是が非でも見過ごせなくなりました。小説を書いていれば映画の脚本を書く仕事にも簡単に移行できると思っている小説家がたくさんいますね。それは思い違いです。どちらも言葉を使って書かれていることに違いありませんが、じっさいには、まったく別の二つの言語だということがわかってないんです。
 
 		　新しい技術は登場するたびに、過去になされたまったく別の発明に支配された制約や規則を無効にしようとします。得意満面、唯一無二の存在であろうとするんです。あたかもその新しい技術さえあれば、何の努力もしなくても、自動的に、生来そなわっていたかのように何かの能力が身につくとでもいうような。ひとりでに新しい能力が備わるかのような。すべての先行技術を一掃し、新しい技術を拒否する人々がいようものなら、ついでに彼らを時代遅れの文盲扱いしかねないような。
 
@@ -206,14 +163,11 @@
 
 \newpage
 
-\thispagestyle{empty}
-
 \setcounter{page}{1}
 
-\hspace*{-0.2in}
-\begin{minipage}{\fullwidth}
-	\tableofcontents
-\end{minipage}
+\thispagestyle{empty}
+
+\tableofcontents
 
 \chapter{はじめに}
 
@@ -898,16 +852,16 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 \end{flushright}
 %\vspace*{\stretch{1}}
 
-\newpage
+%\newpage
 
-\enlargethispage{\paperwidth}
-\thispagestyle{empty}
-\vspace*{-1.05truein}
-\vspace*{-\topmargin}
-\vspace*{-\headheight}
-\vspace*{-\headsep}
-\vspace*{-\topskip}
-\noindent\hspace*{-1.11in}\hspace*{-\oddsidemargin}
-\includegraphics[width=1.025\paperwidth]{./img/bcover.pdf}
+%\enlargethispage{\paperwidth}
+%\thispagestyle{empty}
+%\vspace*{-1.05truein}
+%\vspace*{-\topmargin}
+%\vspace*{-\headheight}
+%\vspace*{-\headsep}
+%\vspace*{-\topskip}
+%\noindent\hspace*{-1.11in}\hspace*{-\oddsidemargin}
+%\includegraphics[width=1.025\paperwidth]{./img/bcover.pdf}
 
 \end{document}
