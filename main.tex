@@ -1,4 +1,4 @@
-\documentclass[9pt,b5paper,tombo,openany,dvipdfmx]{jsbook}
+\documentclass[8pt,b5paper,tombo,openany,dvipdfmx]{jsbook}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{listings}
@@ -11,15 +11,11 @@
 \lstset{basicstyle={\small\ttfamily}}
 \lstset{frame=single}
 \lstset{breaklines=true}
-\lstset{lineskip=-1pt}
-\lstset{framesep=10pt}
+\lstset{lineskip=-1.6pt}
+\lstset{framesep=8pt}
 
 \renewcommand{\kanjifamilydefault}{\gtdefault}
 \renewcommand{\familydefault}{\sfdefault}
-\renewcommand{\baselinestretch}{1.2}
-
-%\setlength{\textwidth}{\fullwidth}
-%\setlength{\evensidemargin}{\oddsidemargin}
 
 \titleformat{\chapter}[display]
   {\normalfont\color{black}}
@@ -190,13 +186,13 @@ OpenStack\marginpar{\scriptsize 英辞郎によればStackとは「積み重な�
 
 \section{第2版について}
 
-このサークルで作成した最初の本は、何よりも人に恵まれたことが、その出自においての影響が大きい。その後も人には恵まれ続けた。これほどの幸運があるだろうか。今回もまたこのサークルで本を出すことになった。1年経った。去年に比べて寒い秋だと思う。
+このサークルで作成した最初の本は、何よりも人に恵まれたことが、その出自においての影響が大きい。その後も人には恵まれ続けた。これほどの幸運があるだろうか。今回もまたこのサークルで本を出すことになった。2年経った。相変わらず東京の夏は暑い。
 
-第2版は\LaTeX ですべて書き直すことにした。理由はGitによる複数人での共同作業に適していた、というのをComicket88での執筆作業で味を占めたからだ。当時はちょうどTeX Live 2015がリリースされたばかりだった。それは僕らの知っているTeXではなかった。使いやすくなり、デザインもこなれていた。でもGoogleにはお世話になった。主にコンパイル方法を思い出すために。ちなみに新刊はScribusを使う。
+第2版は\LaTeX ですべて書き直すことにした。理由はGitによる複数人での共同作業に適していた、というのをComicket88での執筆作業で味を占めたからだ。当時はちょうど\TeX Live 2015がリリースされたばかりだった。それは僕らの知っている\TeX ではなかった。使いやすくなり、デザインもこなれていた。でもGoogleにはお世話になった。主にコンパイル方法を思い出すために。\marginpar{\scriptsize ちなみにScribusを使ったりもしたが、これはイマイチだった。正直に言って、かなりバギーだし、同時誌の執筆者にそれを修正する時間的余裕も無かった。文句だけ言っては申し訳ないので、いつか直したいと思う。}
 
 1年間の間にOpenStackは大きく進化したと思う。伝家の宝刀にはならなかった。インフラは何も変わらなかった。言葉はまだ1人で歩いているけれど、歩みは遅くなった。これらは進化の一端だ。これらの逆を歩んで、消えていったプロジェクトがどれだけあったか。
 
-とにかく、第2版の必要性が生じた。ちょうど同人誌制作にも慣れが出てきたので、ここでテコ入れに書き直すことにしよう。現状と一致しない部分は書き直そう。必要な書き足しを行おう。士郎正宗も驚くほどの脚注を付けよう。もっと優しい言葉を使おう。怒りがより伝わるように。
+とにかく、第2版の必要性が生じた。ちょうど同人誌制作にも慣れが出てきたので、ここでテコ入れに書き直すことにしよう。現状と一致しない部分は書き直そう。必要な書き足しを行おう。
 
 \chapter{OpenStackことはじめ}
 
@@ -280,11 +276,11 @@ Keystoneはユーザ認証とロールベースのアクセスコントロール
 
 \chapter{OpenStackを動かしてみる}
 
-というわけで、これからOpenStackをセットアップしていきましょう。\footnote{「念入りに準備をして、その準備から外れたことはしない人いますけど、それが責任感とでも思っているんですかね。」と言っていたがfootnote送りにしよう。}何でもやってみなくちゃ始まりません。なんとdebでもrpmでもパッケージが提供されています。ディストリビューションのリポジトリを探してみましょう。そのパッケージをインストールすればよいのです。設定ファイルなどを書き直す必要はありますが……まぁパッケージになっているんだしデフォルトでそれなりに動くようになってはいるでしょう。じゃあ起動してみましょう。
+というわけで、これからOpenStackをセットアップしていきましょう。\marginpar{\scriptsize 「念入りに準備をして、その準備から外れたことはしない人いますけど、それが責任感とでも思っているんですかね。」と言っていたがfootnote送りにしよう。}何でもやってみなくちゃ始まりません。なんとdebでもrpmでもパッケージが提供されています。ディストリビューションのリポジトリを探してみましょう。そのパッケージをインストールすればよいのです。設定ファイルなどを書き直す必要はありますが……まぁパッケージになっているんだしデフォルトでそれなりに動くようになってはいるでしょう。じゃあ起動してみましょう。
 
-できましたか？はい、できませんね。僕もできませんでした\footnote{これは未だに情況が改善していない。やはりdevstackの使い方は難しいし、何せgit logを見ないと仕様変更についていけない。コンピューターサイエンスは技術のコモディティ化を目指す、少し珍しい技術領域だと思う。1人が100人を動かし、その100人が1000人の職を奪う技術である。}。何を起動するの？ってか何をしたらOpenStackをセットアップしたことになるの？\footnote{これは大切な疑問である。「何をしたらOpenStackをセットアップしたことになるのか」。Horizonからインスタンス作成ができればセットアップしたことになるとするなら、大抵の場合、問題はセットアップ後のユーザーの誤解を期待の瓦解である。}というかそもそも、何をインストールするの？疑問はどんどん不信に変わっていきます。
+できましたか？はい、できませんね。僕もできませんでした\marginpar{\scriptsize これは未だに情況が改善していない。やはりdevstackの使い方は難しいし、何せgit logを見ないと仕様変更についていけない。コンピューターサイエンスは技術のコモディティ化を目指す、少し珍しい技術領域だと思う。1人が100人を動かし、その100人が1000人の職を奪う技術である。}。何を起動するの？ってか何をしたらOpenStackをセットアップしたことになるの？\marginpar{\scriptsize これは大切な疑問である。「何をしたらOpenStackをセットアップしたことになるのか」。Horizonからインスタンス作成ができればセットアップしたことになるとするなら、大抵の場合、問題はセットアップ後のユーザーの誤解を期待の瓦解である。}というかそもそも、何をインストールするの？疑問はどんどん不信に変わっていきます。
 
-答えはかなり残酷なもので、まず"openstack"で探してみました？前章で出てきた名前のパッケージが見えますね。どれをインストールしました？いや、その前にAMQPインストールしました？ついでに、そもそもなんですが、あなたのカーネルってKVMモジュール効いてます？\footnote{なんと言うことでしょう。QEMUやLXCを使う場合の設定について知らない振りをしているではありませんか。}って実は無くても動くんですけどね。あ、libxml-develが必要かもしれません。どこにも書いてないけど。
+答えはかなり残酷なもので、まず"openstack"で探してみました？前章で出てきた名前のパッケージが見えますね。どれをインストールしました？いや、その前にAMQPインストールしました？ついでに、そもそもなんですが、あなたのカーネルってKVMモジュール効いてます？\marginpar{\scriptsize なんと言うことでしょう。QEMUやLXCを使う場合の設定について知らない振りをしているではありませんか。}って実は無くても動くんですけどね。あ、libxml-develが必要かもしれません。どこにも書いてないけど。
 
 ま、まぁまずはドキュメントを読んでみましょう。
 
@@ -292,14 +288,14 @@ Keystoneはユーザ認証とロールベースのアクセスコントロール
 	\item \url{http://docs.openstack.org/}
 \end{itemize}
 
-の、どれだよ、って？しょうがないなぁCentOS\footnote{初版執筆当時にはFedoraへのインストールドキュメントがあったのだが、LibertyではCentOSになっている。まぁ妥当な判断であろう……。ちなみにCentOSのバージョンは7である。}とUbuntuのを教えてあげよう：
+の、どれだよ、って？しょうがないなぁCentOS\marginpar{\scriptsize 初版執筆当時にはFedoraへのインストールドキュメントがあったのだが、LibertyではCentOSになっている。まぁ妥当な判断であろう……。ちなみにCentOSのバージョンは7である。}とUbuntuのを教えてあげよう：
 
 \begin{itemize}
 	\item \url{http://docs.openstack.org/liberty/install-guide-ubuntu/}
-	\item \url{http://docs.openstack.org/liberty/install-guide-rdo/}\footnote{真面目な注釈をすると、RDOというのはRHEL系のディストリビューション用のOpenStackリポジトリと、その開発やメンテナンスをするコミュニティのことである。つまりはRPMでのパッケージ提供と、CentOSユーザーのサポートである。"R"e"d"hat "O"penStackの略、と思いきや、特に何の略でもないそうである（公式ページを参照）。何でもないって、んなわけあるかい。}
+	\item \url{http://docs.openstack.org/liberty/install-guide-rdo/}\marginpar{\scriptsize 真面目な注釈をすると、RDOというのはRHEL系のディストリビューション用のOpenStackリポジトリと、その開発やメンテナンスをするコミュニティのことである。つまりはRPMでのパッケージ提供と、CentOSユーザーのサポートである。"R"e"d"hat "O"penStackの略、と思いきや、特に何の略でもないそうである（公式ページを参照）。何でもないって、んなわけあるかい。}
 \end{itemize}
 
-詳細なドキュメントですね\footnote{初版はJunoだった。これは第2版からLibertyに変えた。}。これをすべてやらないとOpenStackは動きません。読んでない人のために、ここにまとめを書いておきましょう。三行で言うと：
+詳細なドキュメントですね\marginpar{\scriptsize 初版はJunoだった。これは第2版からLibertyに変えた。}。これをすべてやらないとOpenStackは動きません。読んでない人のために、ここにまとめを書いておきましょう。三行で言うと：
 
 \begin{enumerate}
 	\item この手順では
@@ -307,9 +303,9 @@ Keystoneはユーザ認証とロールベースのアクセスコントロール
 	\item 3台必要
 \end{enumerate}
 
-よろしい。ならば戦争だ。\footnote{Libertyからネットワークの作り方がかなり簡素化されている。}
+よろしい。ならば戦争だ。\marginpar{\scriptsize Libertyからネットワークの作り方がかなり簡素化されている。}
 
-大きな物語を失った若者が右傾化すると言われる今日このごろですが\footnote{宮崎駿の言葉を借りれば、第2版までの間、日本は戦争をしなかった。戦争で儲けもしなかった。若者は大きな物語を失ったと思っていたけれど、今はそうでも無い気がする。でもローマ帝国がゆっくりとゆるかやかに滅びに向かっていた時の、若者と同じ物語を僕らは読んでいる。そんな気がする。でも、そんなことは知ったことではない。}、そんなあなたにdevstackというものがあります。OpenStackを試してみたい場合に便利です、という売り文句ですが、最新のソースコードを元にセットアップするため、OpenStackそのものの開発環境を作る際にも便利なものになっています。中でやっていることは：
+大きな物語を失った若者が右傾化すると言われる今日このごろですが\marginpar{\scriptsize 宮崎駿の言葉を借りれば、第2版までの間、日本は戦争をしなかった。戦争で儲けもしなかった。若者は大きな物語を失ったと思っていたけれど、今はそうでも無い気がする。でもローマ帝国がゆっくりとゆるかやかに滅びに向かっていた時の、若者と同じ物語を僕らは読んでいる。そんな気がする。でも、そんなことは知ったことではない。}、そんなあなたにdevstackというものがあります。OpenStackを試してみたい場合に便利です、という売り文句ですが、最新のソースコードを元にセットアップするため、OpenStackそのものの開発環境を作る際にも便利なものになっています。中でやっていることは：
 
 \begin{itemize}
 	\item OpenStackソースコードの取得
@@ -323,7 +319,7 @@ Keystoneはユーザ認証とロールベースのアクセスコントロール
 
 \section{devstackを使ってみる}
 
-まずLinuxが必要です。devstackのコードを眺めてみると、サポートされているディストリビューションはdebian系・Redhat系・SUSE系のようですが、ここはFedora 21で試してみましょう。執筆時点ではUbuntu 14.10はサポート外のようでした。ちょっとコードにパッチをあてれば動く事には動くのですが、VPNaaS（VPN as a Service）を構築する際に必要になるopenswanというパッケージがUbuntu 14.10のソースに無かったりして、力を出し切ることはできなさそうでした。Fedoraは21からServer・Workstation・Cloudとそれぞれに特化したバージョンを公開していますが、どれでもよいと思います。今回はFedora Server 21 betaを使用しました。GNOME 3採用の時ほどにはあまり知られていないのですが、yumが廃止の方向でして、代わりにdnfというパッケージ管理システムが導入されています。まぁ結局扱うのはRPMなんですけどね。なんですけど、ServerはyumでWorkstationはDNFなんですよね。Serverでdnfって打ったらそんなコマンド無いって言われたよ。
+まずLinuxが必要です。devstackのコードを眺めてみると、サポートされているディストリビューションはdebian系・Redhat系・SUSE系のようですが、ここはFedora 21で試してみましょう。執筆時点ではUbuntu 14.10はサポート外のようでした。ちょっとコードにパッチをあてれば動く事には動くのですが、VPNaaS（VPN as a Service）を構築する際に必要になるopenswanというパッケージがUbuntu 14.10のソースに無かったりして、力を出し切ることはできなさそうでした。Fedoraは21からServer・Workstation・Cloudとそれぞれに特化したバージョンを公開していますが、どれでもよいと思います。今回はFedora Server 21 betaを使用しました。\marginpar{\scriptsize GNOME 3採用の時ほどにはあまり知られていないのですが、yumが廃止の方向でして、代わりにdnfというパッケージ管理システムが導入されています。まぁ結局扱うのはRPMなんですけどね。なんですけど、ServerはyumでWorkstationはDNFなんですよね。Serverでdnfって打ったらそんなコマンド無いって言われたよ。}
 
 お試しで動かす場合にSELinuxは邪魔でしかありませんので、Disable、は負けを認めた感じになりますので、Permissiveにしておきましょう
 
@@ -334,7 +330,7 @@ reboot
 
 OSのインストールとセットアップに関しては割愛しますが、スペックは大きめにしておく必要があります。僕は4GB RAM + 4 Cores + 32GB Btrfsで開発していますが、割とギリギリです。最低限のコンポーネントを起動させておくには問題ありませんが、devstackがサポートするすべてのコンポーネントを同時に起動させておくには8GBほどメモリを用意しておくほうがよいでしょう。
 
-OSのインストールが終わったら、まずはdevstackを取得してみましょう。devstackは残念ながらパッケージでは用意されていません。git cloneしてくる必要があります。
+OSのインストールが終わったら、まずはdevstackを取得してみましょう。devstackは残念ながらパッケージでは用意されていません。\verb|git clone|してくる必要があります。
 
 \begin{lstlisting}
 git clone https://github.com/openstack-dev/devstack.git
@@ -362,15 +358,15 @@ disable_service n-net
 enable_service neutron q-svc q-agt q-dhcp q-l3 q-meta
 \end{lstlisting}
 
-この設定が何かと言いますと、nova-networkを無効化して、代わりにNeutronを有効化しています。勘のよい方は気付くかと思いますが、そうです、これはシェルスクリプトです。disable\_service・enable\_serviceはBashの関数として定義されています。
+この設定が何かと言いますと、nova-networkを無効化して、代わりにNeutronを有効化しています。勘のよい方は気付くかと思いますが、そうです、これはシェルスクリプトです。\verb|disable_service|・\verb|enable_service|はBashの関数として定義されています。
 
-暗号かよ。disable/enableはなんとなくわかるけど……それならenable\_neutronとかじゃないの？enable\_service neutronとか？
+暗号かよ。disable/enableはなんとなくわかるけど……それなら\verb|enable_neutron|とかじゃないの？\verb|enable_service neutron|とか？
 
 いい質問ですね。いろいろ回答できるいい質問です。かつて、VMのネットワーク管理をする部分はnova-networkとしてnovaの一部分として組み込まれていました。ところが、ネットワーク大好きレガシーおじさん達のせいで、どんどんネットワーク周辺のコードが肥大化していくことが見え透き、ついにnovaの一機能からquantumという名で独立し、個別にネットワークの機能を拡張していくことになりました。そのquantumも成熟し、ついにOpenStackの中核を成すコンポーネントに成長し、こうなるってくると急に「実はQuantumって商標なんですよねー出すもん出してもらわないとーチラッチラッ」みたいな話があったかなかったか、Neutronと名を変え、OpenStack内屈指の難解コンポーネントになったのでした。
 
-もうおわかりですね。n-netはnova-networkのことです。これは古き良きものなのでdisableします。かわりにenable\_service neutronします。neutronを構成するサブコンポーネントの起動もします。q-*がそれです。qとは？そう、旧名のquantumのことです。え、nじゃねーの？だってそりゃ、nじゃnovaと被るじゃん。
+もうおわかりですね。n-netはnova-networkのことです。これは古き良きものなのでdisableします。かわりに\verb|enable_service neutron|します。neutronを構成するサブコンポーネントの起動もします。\verb|q-*|がそれです。qとは？そう、旧名のquantumのことです。\marginpar{\scriptsize え、nじゃねーの？だってそりゃ、nじゃnovaと被るじゃん。……やってられませんね。人間味溢れるシステム、それがOpenStackなのです。初心者お断りです。}
 
-……やってられませんね。人間味溢れるシステム、それがOpenStackなのです。初心者お断りです。さて上の２行を書いたらあとは./stack.shするだけです。それだからいけないのか、それだけのことだからいけないのか。
+さて上の２行を書いたらあとは\verb|./stack.sh|するだけです。それだからいけないのか、それだけのことだからいけないのか。
 
 \subsection{devstackを動かす}
 
@@ -408,7 +404,7 @@ OpenStackはさまざまなコンポーネントやプロセス、あるいは�
 
 と、それはそうなのですが、このキューの本当の利点は、実はこの点においてではありません。このキューがあることで、送信者と受信者の数を自在に増減することができるのです。ものすごい量のVM作成依頼が急に来たらプロセスを増やし、逆に増やしすぎて油を売っている状態になっていたら送受信者を減らすこともできます。受信者だけ増やすこともできます。つまり、システムの強度を柔軟に変更することができるようになるのです。年末だからって予算を使い切らないといけない、なんてこともありません。とりあえず今必要な分だけで構築し、困ったら少しづつ増強していく運用スタイルをすることができます。
 
-素晴らしい組織体系ですね。あなたの会社はどうですか？まぁどっちにしても、そのような予算の組み方に依存して生活を営んでいる人で構成された国ですので、それを守るのが正義なんじゃないですかね。まぁいいや。次はこれです：
+素晴らしい組織体系ですね。\marginpar{\scriptsize あなたの会社はどうですか？まぁどっちにしても、そのような予算の組み方に依存して生活を営んでいる人で構成された国ですので、それを守るのが正義なんじゃないですかね。まぁいいや。}次はこれです：
 
 \begin{lstlisting}
 ENTER A SERVICE_TOKEN TO USE FOR THE SERVICE ADMIN TOKEN.
@@ -440,7 +436,7 @@ Enter a password now:
 
 これはOpenStackお試し環境のための、テストユーザー用のパスワードです。
 
-たくさんパスワードありましたね。まぁとりあえず全部passwordとかにしておきましょう。あぁ、そういえば、ちょっと前に自分の目標をパスワードにすると生活が捗るっていうのをFacebookでみかけましたね。そんなことが普通になる世界を想像してみましょう。ああ、なんというユートピア。
+たくさんパスワードありましたね。まぁとりあえず全部passwordとかにしておきましょう。\marginpar{\scriptsize あぁ、そういえば、ちょっと前に自分の目標をパスワードにすると生活が捗るっていうのをFacebookでみかけましたね。そんなことが普通になる世界を想像してみましょう。ああ、なんというユートピア。}
 
 さて、必要なパッケージのインストール後、OpenStackのリポジトリから各コンポーネントのソースコードがgit cloneされていくのが見えると思います。その後、各コンポーネントが起動され、最後にテストデータが次々と投入されていきます。これが終われば、devstackは皆さんを以下の言葉で優しく包んでくれるでしょう：
 
@@ -460,7 +456,7 @@ This is your host ip: 192.168.226.131
 
 では最期のdevstackからの言葉の通り、ブラウザでlocalhostにアクセスしてみましょう。（先ほどの結果では192.168.122.13）ログイン画面が出ます。ユーザー名とパスワードはdevstackのログに書いてあります。まぁとりあえずadminユーザーで入ってみましょう。
 
-ログインできましたか？ここまでくれば、あとはGoogle検索しながら操作できるかと思います。というより、ここまで来てようやく、OpenStackの仕組みや使い方を調べることが意味を持ちます。ここまで来た後の情報はネットに多く転がっているのです。地獄って270個くらいの苦しみがあるみたいですが、全部こなすと、逆に地獄に住めるようになるらしいですよ。
+ログインできましたか？ここまでくれば、あとはGoogle検索しながら操作できるかと思います。というより、ここまで来てようやく、OpenStackの仕組みや使い方を調べることが意味を持ちます。ここまで来た後の情報はネットに多く転がっているのです。\marginpar{\scriptsize 地獄って270個くらいの苦しみがあるみたいですが、全部こなすと、逆に地獄に住めるようになるらしいですよ。}
 
 \subsection{devstack動いてる？}
 
@@ -478,7 +474,7 @@ ps aux -H
 
 たくさんのプロセスがscreenから生えているのが分かると思います。screenの中で起動し、ログはその各スクリーンに標準出力されます。何かコードを変更し、その動作を確かめるときには各スクリーンでおもむろにCtrl-CでプロセスをKillし、上カーソルで同じ起動コマンドをもう一度叩けば、再度プロセスが起動します。開発にはとても便利な環境です。試しにHorizonのログを見ながらブラウザからHorizonを操作してみましょう。ログがどどっと流れていき、通信される他のコンポーネントのログも同時に流れているのが見えると思います。
 
-また、他にも多くのサービスが知らない内に起動していると思います。MySQLやRabbitMQ、OpenVSwitchなどだと思いますが、これらはOpenStackを動かす際に必要となる外部システムです。MySQLはメタデータの永続化、RabbitMQはメッセージキュー、OpenVSwitchはNeutronが依存しています。これらも./stack.sh時に自動でインストールされ、自動的に起動します。また、テストデータも投入済みとなっています。
+また、他にも多くのサービスが知らない内に起動していると思います。MySQLやRabbitMQ、OpenVSwitchなどだと思いますが、これらはOpenStackを動かす際に必要となる外部システムです。MySQLはメタデータの永続化、RabbitMQはメッセージキュー、OpenVSwitchはNeutronが依存しています。これらも\verb|./stack.sh|時に自動でインストールされ、自動的に起動します。また、テストデータも投入済みとなっています。
 
 \section{devstackの中身}
 
@@ -501,7 +497,7 @@ tempestは結合テスト、ceilometerはリソース使用量の解析、s-で�
 
 \subsubsection{RECLONE=yes}
 
-RECLONEは、devstack起動時に最新のソースコードを毎回cloneしてくるか否かです。yesにすると、./stack.shを実行するたびに本家のリポジトリからソースコードをcloneしてきます。常に最新の機能を使うことができますが、まぁこれはOpenStackそのものの開発者しか必要ないでしょう。とはいえ、最新のログを追うのもコミュニティの息づかいを感じることができて楽しいものです。ほら、あれだよ。デグレったりとかさ。
+RECLONEは、devstack起動時に最新のソースコードを毎回cloneしてくるか否かです。yesにすると、./stack.shを実行するたびに本家のリポジトリからソースコードをcloneしてきます。常に最新の機能を使うことができますが、まぁこれはOpenStackそのものの開発者しか必要ないでしょう。とはいえ、最新のログを追うのもコミュニティの息づかいを感じることができて楽しいものです。\marginpar{\scriptsize ほら、あれだよ。デグレったりとかさ。}
 
 \subsubsection{VOLUME\_BACKING\_FILE\_SIZE=1G}
 
@@ -545,7 +541,7 @@ Fedoraにはいつものことですが、パッケージが壊れてます。Fe
  これらを試行できます: rpm -Va --nofiles --nodigest
 \end{lstlisting}
 
-betaだし、こんなことで心折れていてはいけません。リラダンの『未来のイヴ』を読む方がよっぽど大変ですよ。あれは大変でした。まぁとりあえず即座に：
+betaだし、こんなことで心折れていてはいけません。\marginpar{\scriptsize リラダンの『未来のイヴ』を読む方がよっぽど大変ですよ。あれは大変でした。}まぁとりあえず即座に：
 
 \begin{lstlisting}
 yum downgrade pcre
@@ -553,7 +549,7 @@ yum downgrade pcre
 
 \subsubsection{Cenlometer試してみたらディスクフルで天使が見えた}
 
-devstackはCeilomerterもサポートしています。で、Ceilometerは計測データの保管にmongodbを使うのですが、mongodbは起動時に各データベースごと5GBのディスクを確保しようとします。CeilometerはDBを3つ必要としますので、あら大変、15GBも消費されてしまうことになります。Ceilometerを試す際には、/etc/mongodb.confに以下を追記し、大きなファイルを作成しないようにしておきましょう。
+devstackはCeilomerterもサポートしています。で、Ceilometerは計測データの保管にmongodbを使うのですが、mongodbは起動時に各データベースごと5GBのディスクを確保しようとします。CeilometerはDBを3つ必要としますので、あら大変、15GBも消費されてしまうことになります。Ceilometerを試す際には、\verb|/etc/mongodb.conf|に以下を追記し、大きなファイルを作成しないようにしておきましょう。
 
 \begin{lstlisting}
 smallfiles = true
@@ -561,11 +557,11 @@ smallfiles = true
 
 \subsubsection{Oh, Proxy.}
 
-あぁ、Proxyですね。ソースコードをCloneしてくるのにgitプロトコルを使うのですが、これを変えたい時はinstead of設定をしましょう。というのはすぐ思いつくのですが、--systemオプションでユーザーの設定に依存しないところまで広く設定しておきましょう。devstackはカレントユーザーのgit設定は読みません。
+あぁ、Proxyですね。ソースコードをCloneしてくるのにgitプロトコルを使うのですが、これを変えたい時はinstead of設定をしましょう。というのはすぐ思いつくのですが、\verb|--system|オプションでユーザーの設定に依存しないところまで広く設定しておきましょう。devstackはカレントユーザーのgit設定は読みません。
 
 \subsubsection{OSのセットアップについて}
 
-何をもってしてLinuxのインストールが終わったか、というのは人によるでしょう。ここでは、インストーラーでの作業が終了し、パッケージのアップデートが終わっている状態とします。(apt-get update \&\& apt-get upgrade, yum update, dnf upgrade)普通は他にもやりたいことがあるかと思います。(vim, emacs, zsh, screen, tmux, tig ...)執筆時には以下をインストールしました：vim zsh tmux tig
+何をもってしてLinuxのインストールが終わったか、というのは人によるでしょう。ここでは、インストーラーでの作業が終了し、パッケージのアップデートが終わっている状態とします。(\verb|apt-get update && apt-get upgrade, yum update, dnf upgrade|)普通は他にもやりたいことがあるかと思います。(vim, emacs, zsh, screen, tmux, tig ...)執筆時には以下をインストールしました：vim zsh tmux tig
 
 \subsubsection{ホストサーバーのリソースについて}
 
@@ -618,31 +614,29 @@ cloud_final_modules:
 
 \subsection{scripts-per-once}
 
-"/var/lib/cloud/scripts/per-once/"以下のスクリプトを実行
+\verb|/var/lib/cloud/scripts/per-once/|以下のスクリプトを実行
 
 * 初回起動時に実行 (OpenStack環境ではユーザが独自イメージを作成する際に実行される)
 
 \subsection{scripts-per-boot}
 
-"/var/lib/cloud/scripts/per-boot/"以下のスクリプトを実行
+\verb|/var/lib/cloud/scripts/per-boot/|以下のスクリプトを実行
 
 * リブート時に実行
 
 \subsection{scripts-per-instance}
 
-"/var/lib/cloud/scripts/per-instance/"以下のスクリプトを実行
+\verb|/var/lib/cloud/scripts/per-instance/|以下のスクリプトを実行
 
 * Novaでインスタンスを初回ブートする時に実行
 
-インスタンスへの固定IPの設定は初回ブート時に必要な作業なので、scripts-per-instanceを利用する。以下のとおり、スクリプトを配置します。
+インスタンスへの固定IPの設定は初回ブート時に必要な作業なので、\verb|scripts-per-instance|を利用する。以下のとおり、スクリプトを配置します。
 
 \begin{verbatim}
 # cd /var/lib/cloud/scripts
 # tree `pwd`
 /var/lib/cloud/scripts
-
 ├── per-instance
-
 │   └── per-instance.sh
 \end{verbatim}
 
@@ -654,7 +648,7 @@ cloud_final_modules:
 /root/bootstrap/networking.py
 \end{lstlisting}
 
-/root/bootstrap配下に固定IPを設定するためのPythonスクリプトを配置します。
+\verb|/root/bootstrap|配下に固定IPを設定するためのPythonスクリプトを配置します。
 
 \begin{verbatim}
 # cd /root/bootstrap
@@ -670,9 +664,9 @@ cloud_final_modules:
 └── networking.py
 \end{verbatim}
 
-処理の流れとしては、config\_driveをマウントし、ipconfigコマンド、routeコマンドを使いIP設定を行い、最後にconfig\_driveをアンマウントするという流れです。当然、次回リブートすると設定は消えてしまうので、ブート後ネットワークの設定ファイルを修正する必要がありますが、このスクリプトにより初回ブート時に自動でsshできるようになります。Pythonスクリプトの中身は以下で紹介していますので、ご参考下さい。
+処理の流れとしては、\verb|config_drive|をマウントし、\verb|ipconfig|コマンド、\verb|route|コマンドを使いIP設定を行い、最後に\verb|config_drive|をアンマウントするという流れです。当然、次回リブートすると設定は消えてしまうので、ブート後ネットワークの設定ファイルを修正する必要がありますが、このスクリプトにより初回ブート時に自動でSSHできるようになります。Pythonスクリプトの中身は以下で紹介していますので、ご参考下さい。
 
-https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
+\url{https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata_py.txt}
 
 \chapter{ブートシーケンス}
 
@@ -782,6 +776,11 @@ https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata\_py.txt
 \section*{くろろろろ}
 
 イラスト担当のくろろろろです。人様の原稿に絵を付けたのはこれが初めてなので、とても緊張しました。表紙を見てOpenStackに少しでも興味を持って貰えると嬉しく思います。
+
+\newpage
+\thispagestyle{empty}
+\begin{minipage}{\textwidth}
+\end{minipage}
 
 \newpage
 \thispagestyle{empty}
