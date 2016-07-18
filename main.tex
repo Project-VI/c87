@@ -1,4 +1,4 @@
-\documentclass[9pt,b5paper,tombo,openany,dvipdfmx]{jsbook}
+\documentclass[8pt,b5paper,tombo,openany,dvipdfmx]{jsbook}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{listings}
@@ -47,99 +47,13 @@
 
 \newpage
 
-\setcounter{page}{1}
-
+\mbox{}
 \thispagestyle{empty}
-
-\begin{minipage}{1.1\textwidth}
-	\small
-	ここはどこかの大学の研究室。
-
-	クラウドコンピューティングサービスについて研究しています。
-
-	研究室に訪ねてきた男子大学生のあなたが主人公です。
-
-	\subsubsection{Keysotne（操作ユーザーの認証・認可を担当）}
-
-	\begin{floatingfigure}[r]{3cm}
-		\includegraphics[width=3cm]{./img/char1.pdf}
-	\end{floatingfigure}
-
-	\begin{floatingfigure}[r]{3cm}
-		\includegraphics[width=3cm]{./img/char2.pdf}
-	\end{floatingfigure}
-
-	研究室の准教授。永遠の17歳。
-
-	研究室メンバーを選んだ張本人。先生の機嫌を損ねると研究室から締め出される。
-
-	「あらようこそいらっしゃい♪　あなた専攻は何かしら？」
-
-	\subsubsection{Horizon（OpenStackを操作するGUI）}
-
-	keystone先生が飼ってるワインレッドの猫。
-
-	先生の胸の谷間におさまるのがお気に入り。
-
-	先生の指示棒でお腹を撫でるとディスプレイにトランスフォームする
-
-	\subsubsection{Nova(仮想マシンの管理)}
-
-	本作のメインヒロイン。3年生。
-
-	ボケるCinderを突っ込むも今ひとつ。後ろでいつも先生に苦笑いをされている。
-
-	面倒見がよく、後輩のGlanceちゃんをかわいがっている。
-
-	「ちょっとGlance！カタログより先にお茶出しでしょ！もう~」
-
-	\subsubsection{Glance（仮想マシンで使えるOSを管理）}
-
-	研究室に最近入り浸るようになった、怖いもの知らずの2年生。
-
-	肩にかけたバッグにはOSカタログがびっしり。研究室に来るお客様に
-
-	「ねえねえ見て見て！どれにする？？」
-
-	とカタログを開いて迫ってくるけど選んだら選んだで
-
-	「ほんとにそれでいいの・・・？」と上目遣いであざとく聞いてくる。
-
-	\subsubsection{Cinder(仮想マシンにボリュームを追加)}
-
-	世間知らずの天然さん。3年生。お金持ちのお嬢様。お家は広い宮殿。
-
-	研究室の備品は全て彼女の提供品。
-
-	「最近おこづかいきつくて・・・バイト増やさないと。。。」
-
-	「え？どうしてじいやに頼まないの？」
-
-	「普通の家にはいないんだよCinderちゃん・・・」
-
-	\subsubsection{Neutron(ネットワーク接続を管理)}
-
-	主人公の友人関係までバッチリ把握済みの情報通。3年生。
-
-	ケンカは見ているだけのことが多いけど、時々鋭いことを言う。
-
-	「GlanceちゃんもCinderちゃんもいいかげんにしなよ？
-
-	ふたりともNovaちゃんのこと好きなだけだよね？見てたらわかるよ？」
-
-	しかし男関係についてはどうやら来る者拒まずの清楚系ビ◯チ。
-
-	「こないだの彼？とっくに別れたわよ、3人と浮気してるの見えちゃったんだもん」
-
-	--- 見た目も性格もバラバラな5人だけど、やりたいことに手をあげたら、Openstackができました。
-
-\end{minipage}
 
 \newpage
-\setcounter{page}{1}
-\thispagestyle{empty}
-\vspace*{\stretch{1}}
-\hspace*{1.7in}
+
+\hspace*{2in}
+\hspace*{3mm}
 \begin{minipage}{0.5\hsize}
 	\begin{tiny}
 		　こういう脅迫みたいな場面は、子供の頃からしょっちゅう見てきました。そのくせ、じっさいに起こることはまったくその逆なんです。新しい技術が出てくるたびに、新しい「言語を習得するための長い長い入門期間が必要になり、その入門期間は、私たちの頭がその新技術に先行する諸々の言語を使い慣れていればいるほど、長くなるのです。1903年から05年にかけて、映画という新しい言語が産声を上げ、是が非でも見過ごせなくなりました。小説を書いていれば映画の脚本を書く仕事にも簡単に移行できると思っている小説家がたくさんいますね。それは思い違いです。どちらも言葉を使って書かれていることに違いありませんが、じっさいには、まったく別の二つの言語だということがわかってないんです。
@@ -158,17 +72,15 @@
 		\end{flushright}
 	\end{tiny}
 \end{minipage}
-\vspace*{\stretch{1}}
 
-\newpage
-
-\setcounter{page}{1}
+\begin{minipage}{0.8\paperwidth}
+	\tableofcontents
+\end{minipage}
 
 \thispagestyle{empty}
 
-\tableofcontents
-
 \chapter{はじめに}
+\setcounter{page}{1}
 
 OpenStack\marginpar{\scriptsize 英辞郎によればStackとは「積み重なったもの」という意味があるようだが、コンピューターサイエンスではFILOである。Big Tentの名の下にプロジェクトの分割や新規プロジェクトの容易な出現が見て取れる昨今のOpenStackにおいてFILOとはなんとも皮肉である。}という単語を聞いたことがある人が、この本を手に取って頂いたのだと思います。あるいは表紙がかわいいから\marginpar{\scriptsize 表紙に関してはまず登場人物をコアコンポーネントの5人ということを決め、あとはよしなに個性を決定していく形になった。要するに擬人化のたぐいである。ところでOpenStack擬人化がなかなか行われないのはなぜか。結局難しくて誰もわかんねーんじゃねぇのか、ということはさておき。分かることしか分かろうとしないのが、オタクがオタクでしかあり得ないことの表れでもある。誰だよオタクが日本の力とか言ってた奴は出てこい。}、という理由かもしれません。
 
@@ -276,9 +188,9 @@ Keystoneはユーザ認証とロールベースのアクセスコントロール
 
 \chapter{OpenStackを動かしてみる}
 
-というわけで、これからOpenStackをセットアップしていきましょう。\marginpar{\scriptsize 念入りに準備をして、その準備から外れたことはしない人いますけど、それが責任感とでも思っているんですかね。}何でもやってみなくちゃ始まりません。devでもrpmでもパッケージが提供されています。ディストリビューションのリポジトリを探してみましょう。そのパッケージをインストールすればよいのです。設定ファイルなどを書き直す必要はありますが……まぁパッケージになっているんだしデフォルトでそれなりに動くようになってはいるでしょう。じゃあ起動してみましょう。
+というわけで、これからOpenStackをセットアップしていきましょう。何でもやってみなくちゃ始まりません。devでもrpmでもパッケージが提供されています。ディストリビューションのリポジトリを探してみましょう。そのパッケージをインストールすればよいのです。設定ファイルなどを書き直す必要はありますが……まぁパッケージになっているんだしデフォルトでそれなりに動くようになってはいるでしょう。じゃあ起動してみましょう。
 
-できましたか？はい、できませんね。僕もできませんでした\marginpar{\scriptsize これは未だに情況が改善していない。やはりdevstackの使い方は難しいし、何せgit logを見ないと仕様変更についていけない。コンピューターサイエンスは技術のコモディティ化を目指す、少し珍しい技術領域だと思う。1人が100人を動かし、その100人が1000人の職を奪う技術である。}。何を起動するの？ってか何をしたらOpenStackをセットアップしたことになるの？\marginpar{\scriptsize これは大切な疑問である。「何をしたらOpenStackをセットアップしたことになるのか」。Horizonからインスタンス作成ができればセットアップしたことになるとするなら、大抵の場合、問題はセットアップ後のユーザーの誤解と期待の瓦解である。}というかそもそも、何をインストールするの？疑問はどんどん不信に変わっていきます。
+できましたか？はい、できませんね。僕もできませんでした\marginpar{\scriptsize これは未だに情況が改善していない。やはりdevstackの使い方は難しいし、何せgit logを見ないと仕様変更についていけない。コンピューターサイエンスは技術のコモディティ化を目指す、少し珍しい技術領域だと思う。1人が100人を動かし、その100人が1000人の職を奪う技術である。}。何を起動するの？ってか何をしたらOpenStackをセットアップしたことになるの？というかそもそも、何をインストールするの？疑問はどんどん不信に変わっていきます。
 
 いや、その前にAMQPインストールしました？ついでに、そもそもなんですが、あなたのカーネルってKVMモジュール効いてます？あ、libxml-develが必要かもしれません。などなど、どこにも書いてない要件がたくさんあります。ま、まぁまずはドキュメントを読んでみましょう。
 
@@ -761,11 +673,88 @@ cloud_final_modules:
 
 \newpage
 \thispagestyle{empty}
+\vspace*{-1in}
+\begin{minipage}{\textwidth}
+	\scriptsize
+	ここはどこかの大学の研究室。クラウドコンピューティングサービスについて研究しています。
 
-%\begin{flushleft}
-\begin{minipage}{0.5\hsize}
+	研究室に訪ねてきた男子大学生のあなたが主人公です。
+
+	\subsubsection{Keysotne（操作ユーザーの認証・認可を担当）}
+
+	\begin{floatingfigure}[r]{3cm}
+		\includegraphics[width=3cm]{./img/char1.pdf}
+	\end{floatingfigure}
+
+	\begin{floatingfigure}[r]{3cm}
+		\includegraphics[width=3cm]{./img/char2.pdf}
+	\end{floatingfigure}
+
+	研究室の准教授。永遠の17歳。
+
+	研究室メンバーを選んだ張本人。先生の機嫌を損ねると研究室から締め出される。
+
+	「あらようこそいらっしゃい♪　あなた専攻は何かしら？」
+
+	\subsubsection{Horizon（OpenStackを操作するGUI）}
+
+	keystone先生が飼ってるワインレッドの猫。先生の胸の谷間におさまるのがお気に入り。
+
+	先生の指示棒でお腹を撫でるとディスプレイにトランスフォームする
+
+	\subsubsection{Nova(仮想マシンの管理)}
+
+	本作のメインヒロイン。3年生。
+
+	ボケるCinderを突っ込むも今ひとつ。後ろでいつも先生に苦笑いをされている。
+
+	面倒見がよく、後輩のGlanceちゃんをかわいがっている。
+
+	「ちょっとGlance！カタログより先にお茶出しでしょ！もう~」
+
+	\subsubsection{Glance（仮想マシンで使えるOSを管理）}
+
+	研究室に最近入り浸るようになった、怖いもの知らずの2年生。
+
+	肩にかけたバッグにはOSカタログがびっしり。研究室に来るお客様に
+
+	「ねえねえ見て見て！どれにする？？」とカタログを開いて迫ってくるけど選んだら選んだで
+
+	「ほんとにそれでいいの・・・？」と上目遣いであざとく聞いてくる。
+
+	\subsubsection{Cinder(仮想マシンにボリュームを追加)}
+
+	世間知らずの天然さん。3年生。お金持ちのお嬢様。お家は広い宮殿。
+
+	研究室の備品は全て彼女の提供品。
+
+	「最近おこづかいきつくて・・・バイト増やさないと。。。」
+
+	「え？どうしてじいやに頼まないの？」
+
+	「普通の家にはいないんだよCinderちゃん・・・」
+
+	\subsubsection{Neutron(ネットワーク接続を管理)}
+
+	主人公の友人関係までバッチリ把握済みの情報通。3年生。
+
+	ケンカは見ているだけのことが多いけど、時々鋭いことを言う。
+
+	「GlanceちゃんもCinderちゃんもいいかげんにしなよ？
+
+	ふたりともNovaちゃんのこと好きなだけだよね？見てたらわかるよ？」
+
+	しかし男関係についてはどうやら来る者拒まずの清楚系ビ◯チ。
+
+	「こないだの彼？とっくに別れたわよ、3人と浮気してるの見えちゃったんだもん」
+
+	--- 見た目も性格もバラバラな5人だけど、やりたいことに手をあげたら、Openstackができました。
+
+\end{minipage}
+
+\vspace*{10mm}
+\begin{minipage}{\textwidth}
 	\begin{scriptsize}
-
 		\subsection*{スタッフプロフィール}
 
 		\subsubsection*{本編 こじろーさん}
@@ -794,27 +783,9 @@ cloud_final_modules:
 
 	\end{scriptsize}
 \end{minipage}
-%\end{flushleft}
 
-\vspace*{\stretch{1}}
-%\begin{flushright}
-\begin{minipage}{0.6\hsize}
-	\begin{small}
-		\begin{description}
-			\item{制作：} なっぴ
-			\item{著者：} こじろう・まっきー
-			\item{挿絵：} くろろろろ・あおこ
-			\item{初版発行：} 2014年12月30日
-			\item{第2版発行：} 2016年8月14日
-			\item{印刷：} POPLS (\url{http://www.inv.co.jp/~popls/})
-		\end{description}
-	\end{small}
-\end{minipage}
-%\end{flushright}
-%\vspace*{\stretch{1}}
-
-\newpage
-
+\vspace*{15mm}
+\hspace*{-11mm}
 \begin{minipage}{0.6\hsize}
 	\begin{small}
 		\begin{description}
@@ -829,6 +800,8 @@ cloud_final_modules:
 \end{minipage}
 
 \newpage
+\thispagestyle{empty}
+\mbox{}\newpage
 
 \enlargethispage{\paperwidth}
 \thispagestyle{empty}
@@ -837,11 +810,11 @@ cloud_final_modules:
 \vspace*{-\headheight}
 \vspace*{-\headsep}
 \vspace*{-\topskip}
-\vspace*{-1mm}
+\vspace*{2mm}
 \noindent
 \hspace*{-1truein}
-\hspace*{-\evensidemargin}
-\hspace*{-2mm}
+\hspace*{-\oddsidemargin}
+\hspace*{1mm}
 \includegraphics[width=1.02\paperwidth]{./img/bcover.pdf}
 
 \end{document}
