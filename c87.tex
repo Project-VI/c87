@@ -19,13 +19,11 @@
 
 \titleformat{\chapter}[display]
   {\normalfont\color{black}}
-  %{\filleft\Huge\sffamily\bfseries\chaptertitlename\hspace*{2mm}%
   {\filleft\Huge\sffamily\bfseries\hspace*{2mm}
-    \begin{tikzpicture}[baseline={([yshift=-.6ex]current bounding box.center)}]
+    \begin{tikzpicture}[baseline={([yshift=-.5ex]current bounding box.center)}]
       \node[fill=gray,circle,text=black] {\thechapter};
     \end{tikzpicture}}
   {1ex}
-  %{\titlerule[1.5pt]\vspace*{5ex}\huge\sffamily\itshape}
   {\titlerule[1.5pt]\vspace*{5ex}\huge\sffamily}
   []
 
@@ -560,7 +558,7 @@ cloud_final_modules:
 
 処理の流れとしては、\verb|config_drive|をマウントし、\verb|ipconfig|コマンド、\verb|route|コマンドを使いIP設定を行い、最後に\verb|config_drive|をアンマウントするという流れです。当然、次回リブートすると設定は消えてしまうので、ブート後ネットワークの設定ファイルを修正する必要がありますが、このスクリプトにより初回ブート時に自動でSSHできるようになります。Pythonスクリプトの中身は以下で紹介していますので、ご参考下さい。
 
-\url{https://github.com/Project-VI/OpenStack/blob/master/5-1-userdata_py.txt}
+\url{https://github.com/Project-VI/c87/blob/master/orig/4-1-userdata_py.txt}
 
 \chapter{ブートシーケンス}
 
